@@ -2,3 +2,4 @@
 # Un blog en PHP et MySQL utilisant la structure MVC et la POO
 # Une partie admin pour administrer le blog
 # Un double layout
+# Modification depuis GitHub
