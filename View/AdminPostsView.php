@@ -1,8 +1,4 @@
-<?php
-
-$activePage = 'posts';
-?>
-          <div class="main-content-container container-fluid px-4">
+<div class="main-content-container container-fluid px-4">
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
@@ -59,5 +55,5 @@ $activePage = 'posts';
         		— <a href="?action=adminPosts&page=<?php echo $page + 1; ?>">Page suivante</a>
         		<?php endif; ?>
             </div>
-            
+          </div>  
 			<?php include_once 'ModalPostView.php';?>

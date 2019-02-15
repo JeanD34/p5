@@ -39,41 +39,41 @@
                     <li class="list-group-item p-3">
                       <div class="row">
                         <div class="col">
-                            <form>
+                            <form method="post" action="index.php?action=updateAccount" enctype="multipart/form-data">
                             	<div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="username">Pseudo</label>
-                                        <input type="text" class="form-control" id="username" placeholder="Pseudo" value="<?= $user->getUsername();?>"> 
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Pseudo" value="<?= $user->getUsername();?>"> 
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" placeholder="Email" value="<?= $user->getEmail(); ?>"> 
+                                        <input type="text" class="form-control" id="email" placeholder="Email" name="email" value="<?= $user->getEmail(); ?>"> 
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="password">Mot de passe</label>
-                                        <input type="password" class="form-control" id="password" placeholder="Mot de passe" value="<?= $user->getPassword(); ?>"> 
+                                        <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" value=""> 
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <label for="site">Website</label>
-                                        <input type="text" class="form-control" id="site" placeholder="Website" value="<?= $user->getWebsite(); ?>"> 
+                                        <label for="website">Website</label>
+                                        <input type="text" class="form-control" id="website" placeholder="Website" name="website" value="<?= $user->getWebsite(); ?>"> 
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <label for="avatar">Avatar</label>
-                                        <input type="file" class="form-control" id="avatar"> 
+                                        <label for="avatar">Avatar (Dimensions conseillées 128X128)</label>
+                                        <input type="file" class="form-control" id="avatar" name="avatar"> 
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                     	<label for="description">Description</label>
-    									<textarea class="form-control" id="description" rows="5" cols=""><?= $user->getDescription(); ?></textarea> 
+    									                <textarea class="form-control" id="description" name="description" rows="5" cols=""><?= $user->getDescription(); ?></textarea> 
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -95,7 +95,7 @@
                   <div class="col-lg-4 col-md-12 col-sm-12 mb-4">
                     <div class="card card-small blog-comments">
                       <div class="card-header border-bottom">
-                        <h6 class="m-0">Vos derniers commentaires</h6>
+                        <h6 class="m-0">Vos derniers commentaires publiés</h6>
                       </div>
                       <div class="card-body p-0">
                       <?php foreach ($userComments as $comment) : ?>
@@ -128,7 +128,7 @@
                       <div class="card-footer border-top">
                         <div class="row">
                           <div class="col text-center view-report">
-                          <form action="?action=adminUserComments" method="post">
+                          <form action="?action=userComments" method="post">
                             <button type="submit" class="btn btn-white">Voir tous vos commentaires</button>
                             </form>
                           </div>

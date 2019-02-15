@@ -1,8 +1,7 @@
 <?php 
 
-
 $page = $_SERVER['REQUEST_URI'];
-$activePage = str_replace('/eclipse/test_mvc_poo/index.php?action=', '',$page);
+$activePage = str_replace('/blog/index.php?action=', '', $page);
 
 ?>
 <!doctype html>
@@ -39,6 +38,7 @@ $activePage = str_replace('/eclipse/test_mvc_poo/index.php?action=', '',$page);
           </div>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
+            <?php if($_SESSION['auth']['role'] === 'admin') : ?>
               <li class="nav-item">
                 <a class="nav-link <?php if ($activePage === 'admin') { echo 'active'; } ?>" href="index.php?action=admin">
                   <i class="material-icons">pan_tool</i>
@@ -48,7 +48,7 @@ $activePage = str_replace('/eclipse/test_mvc_poo/index.php?action=', '',$page);
               <li class="nav-item">
                 <a class="nav-link <?php if ($activePage === 'adminPosts') { echo 'active'; } ?>" href="?action=adminPosts">
                   <i class="material-icons">vertical_split</i>
-                  <span>Articles</span>
+                  <span>Tous les articles</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -57,34 +57,41 @@ $activePage = str_replace('/eclipse/test_mvc_poo/index.php?action=', '',$page);
                   <span>Ajouter un article</span>
                 </a>
               </li>
-        		<?php if (stristr($activePage, 'updateView')) : ?>
-               <li class="nav-item">
-                <a class="nav-link active" href="">
-                  <i class="material-icons">note</i>
-                  <span>Modifier Article</span>
-                </a>
-              </li>
-              <?php endif; ?> 
-              <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'adminComments') { echo 'active'; } ?>" href="?action=adminComments">
-                  <i class="material-icons">insert_comment</i>
-                  <span>Commentaires</span>
-                </a>
-              </li>
-               <?php if (stristr($activePage, 'editCommentView')) : ?>
-               <li class="nav-item">
-                <a class="nav-link active" href="">
-                  <i class="material-icons">mode_comment</i>
-                  <span>Modifier Commentaire</span>
-                </a>
-              </li>
-              <?php endif; ?>  
               <li class="nav-item">
                 <a class="nav-link <?php if ($activePage === 'users') { echo 'active'; } ?>" href="tables.html">
                   <i class="material-icons">table_chart</i>
                   <span>Utilisateurs</span>
                 </a>
               </li>
+        		<?php if (stristr($activePage, 'updateView')) : ?>
+               <li class="nav-item">
+                <a class="nav-link active" href="">
+                  <i class="material-icons">note</i>
+                  <span>Modifier article</span>
+                </a>
+              </li>
+              <?php endif; ?> 
+              <li class="nav-item">
+                <a class="nav-link <?php if ($activePage === 'adminComments') { echo 'active'; } ?>" href="?action=adminComments">
+                  <i class="material-icons">insert_comment</i>
+                  <span>Tous les commentaires</span>
+                </a>
+              </li>
+              <?php endif; ?>
+              <li class="nav-item">
+                <a class="nav-link <?php if ($activePage === 'userComments') { echo 'active'; } ?>" href="?action=userComments">
+                  <i class="material-icons">insert_comment</i>
+                  <span>Vos commentaires</span>
+                </a>
+              </li>
+               <?php if (stristr($activePage, 'editCommentView')) : ?>
+               <li class="nav-item">
+                <a class="nav-link active" href="">
+                  <i class="material-icons">mode_comment</i>
+                  <span>Modifier commentaire</span>
+                </a>
+              </li>
+              <?php endif; ?>               
               <li class="nav-item">
                 <a class="nav-link <?php if ($activePage === 'profile') { echo 'active'; } ?>" href="?action=profile">
                   <i class="material-icons">person</i>
@@ -103,16 +110,21 @@ $activePage = str_replace('/eclipse/test_mvc_poo/index.php?action=', '',$page);
               <ul class="navbar-nav border-left flex-row ">             
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" src="Content/backend/images/avatars/0.jpg" alt="User Avatar">
+                    <img class="user-avatar rounded-circle mr-2" src="Content/backend/images/avatars/<?= $_SESSION['auth']['avatar']?>" alt="Avatar">
                     <span class="d-none d-md-inline-block"><?= $_SESSION['auth']['username']?></span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
                     <a class="dropdown-item" href="?action=profile">
                       <i class="material-icons">&#xE7FD;</i> Profil</a>
+                    <?php if($_SESSION['auth']['role'] == 'admin'): ?>  
                     <a class="dropdown-item" href="?action=adminPosts">
                       <i class="material-icons">vertical_split</i> Articles</a>
                     <a class="dropdown-item" href="?action=addPostView">
                       <i class="material-icons">note_add</i> Ajouter un article</a>
+                    <?php else : ?>
+                    <a class="dropdown-item" href="?action=userComments">
+                      <i class="material-icons">insert_comment</i> Vos commentaires</a>
+                    <?php endif; ?>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="?action=logout">
                       <i class="material-icons text-danger">&#xE879;</i> Déconnexion </a>
