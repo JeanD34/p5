@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Config/Config.php';
+
 session_start();
 
 spl_autoload_register('autoload');
