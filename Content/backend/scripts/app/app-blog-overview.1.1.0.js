@@ -100,7 +100,7 @@
         }
 
         // Generate the small charts
-        boSmallStatsDatasets.map(function (el, index) {
+        /*boSmallStatsDatasets.map(function (el, index) {
             var chartOptions = boSmallStatsOptions(Math.max.apply(Math, el.data) + 1);
             var ctx = document.getElementsByClassName('blog-overview-stats-small-' + (index + 1));
             new Chart(ctx, {
@@ -118,14 +118,14 @@
                 },
                 options: chartOptions
             });
-        });
+        });*/
 
 
         //
         // Blog Overview Users
         //
 
-        var bouCtx = document.getElementsByClassName('blog-overview-users')[0];
+        //var bouCtx = document.getElementsByClassName('blog-overview-users')[0];
 
         // Data
         var bouData = {
@@ -214,20 +214,20 @@
         };
 
         // Generate the Analytics Overview chart.
-        window.BlogOverviewUsers = new Chart(bouCtx, {
+        /*window.BlogOverviewUsers = new Chart(bouCtx, {
             type: 'LineWithLine',
             data: bouData,
             options: bouOptions
-        });
+        });*/
 
         // Hide initially the first and last analytics overview chart points.
         // They can still be triggered on hover.
-        var aocMeta = BlogOverviewUsers.getDatasetMeta(0);
-        aocMeta.data[0]._model.radius = 0;
-        aocMeta.data[bouData.datasets[0].data.length - 1]._model.radius = 0;
+        /* var aocMeta = BlogOverviewUsers.getDatasetMeta(0);
+         aocMeta.data[0]._model.radius = 0;
+         aocMeta.data[bouData.datasets[0].data.length - 1]._model.radius = 0;*/
 
         // Render the chart.
-        window.BlogOverviewUsers.render();
+        //window.BlogOverviewUsers.render();
 
         //
         // Users by device pie chart
@@ -269,11 +269,11 @@
         var ubdCtx = document.getElementsByClassName('blog-users-by-device')[0];
 
         // Generate the users by device chart.
-        window.ubdChart = new Chart(ubdCtx, {
+        /*window.ubdChart = new Chart(ubdCtx, {
             type: 'pie',
             data: ubdData,
             options: ubdOptions
-        });
+        });*/
 
     });
 })(jQuery);
