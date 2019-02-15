@@ -9,7 +9,7 @@ spl_autoload_register('autoload');
 function autoload($class, $dir = null) {
     
     if (is_null($dir)) {
-        $dir = '../test_mvc_poo/';
+        $dir = '../blog/';
     }
     
     foreach (scandir($dir) as $file) {
