@@ -25,7 +25,7 @@ class UserManager extends AbstractManager
             $row = $result->fetch();
             return $row;            
         } else {
-            throw new Exception('L\'utilisateur numéro ' . $username . ' n\'existe pas.');
+            throw new Exception('L\'utilisateur ' . $username . ' n\'existe pas.');
         } 
     }
     
@@ -47,5 +47,11 @@ class UserManager extends AbstractManager
         } else {
             throw new Exception('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
         } 
+    }
+
+    public function update($user)
+    {
+        $sql = 'UPDATE user SET username = ?, email = ?, password = ?, website = ?, avatar = ?, description = ? WHERE id = ?';
+        $this->queryExecute($sql, array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getWebsite(), $user->getAvatar(), $user->getDescription(), $user->getId(),));
     }
 }
