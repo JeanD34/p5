@@ -1,9 +1,9 @@
 <?php 
 
-if(!isset($_SESSION['auth'])) {
-    $_SESSION['error'] = 'Vous devez vous connecter pour accéder à cette section';
-    header("Location: index.php?action=loginView");
-}
+
+$page = $_SERVER['REQUEST_URI'];
+$activePage = str_replace('/eclipse/test_mvc_poo/index.php?action=', '',$page);
+
 ?>
 <!doctype html>
 <html class="no-js h-100" lang="fr">
@@ -40,41 +40,57 @@ if(!isset($_SESSION['auth'])) {
           <div class="nav-wrapper">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="index.php?action=admin">
-                  <i class=""></i>
+                <a class="nav-link <?php if ($activePage === 'admin') { echo 'active'; } ?>" href="index.php?action=admin">
+                  <i class="material-icons">pan_tool</i>
                   <span>Panneau d'administration</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="?action=adminPosts">
+                <a class="nav-link <?php if ($activePage === 'adminPosts') { echo 'active'; } ?>" href="?action=adminPosts">
                   <i class="material-icons">vertical_split</i>
                   <span>Articles</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="?action=addPostView">
+                <a class="nav-link <?php if ($activePage === 'addPostView') { echo 'active'; } ?>" href="?action=addPostView">
                   <i class="material-icons">note_add</i>
                   <span>Ajouter un article</span>
                 </a>
               </li>
+        		<?php if (stristr($activePage, 'updateView')) : ?>
+               <li class="nav-item">
+                <a class="nav-link active" href="">
+                  <i class="material-icons">note</i>
+                  <span>Modifier Article</span>
+                </a>
+              </li>
+              <?php endif; ?> 
               <li class="nav-item">
-                <a class="nav-link " href="tables.html">
+                <a class="nav-link <?php if ($activePage === 'adminComments') { echo 'active'; } ?>" href="?action=adminComments">
                   <i class="material-icons">insert_comment</i>
                   <span>Commentaires</span>
                 </a>
               </li>
+               <?php if (stristr($activePage, 'editCommentView')) : ?>
+               <li class="nav-item">
+                <a class="nav-link active" href="">
+                  <i class="material-icons">mode_comment</i>
+                  <span>Modifier Commentaire</span>
+                </a>
+              </li>
+              <?php endif; ?>  
               <li class="nav-item">
-                <a class="nav-link " href="tables.html">
+                <a class="nav-link <?php if ($activePage === 'users') { echo 'active'; } ?>" href="tables.html">
                   <i class="material-icons">table_chart</i>
                   <span>Utilisateurs</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="?action=profile">
+                <a class="nav-link <?php if ($activePage === 'profile') { echo 'active'; } ?>" href="?action=profile">
                   <i class="material-icons">person</i>
                   <span>Profil</span>
                 </a>
-              </li>             
+              </li>                      
             </ul>
           </div>
         </aside>
@@ -119,16 +135,13 @@ if(!isset($_SESSION['auth'])) {
                 <a class="nav-link" href="index.php">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
+                <a class="nav-link" href="index.php#about">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="index.php#contact">Contact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Products</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
+                <a class="nav-link" href="index.php?action=posts">Blog</a>
               </li>
             </ul>
           </footer>

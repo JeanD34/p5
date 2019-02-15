@@ -82,6 +82,10 @@ nav ul li a {
   transition: all 0.5s ease-in-out 0s;
 }
 
+p.login-comment {
+  margin: 0;
+}
+
 p {
   margin: 25px 0;
   padding: 0;
@@ -268,6 +272,19 @@ nav ul li a {
   color: #fff;
 }
 
+div.down {
+  position: absolute;
+  top: 71vh;
+  position:absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+a.down {
+  color: #fff;
+}
+
 .header-content p {
   font-size: 13px;
   letter-spacing: 5px;
@@ -297,6 +314,11 @@ img {
   height: auto;
 }
 
+.home-img {
+  max-width: 100%;
+  height: auto;
+}
+
 #about {
   width: 100%;
   height: auto;
@@ -315,7 +337,7 @@ img {
 #about .about-descr .p-heading {
   font-family: 'Playfair Display', serif;
   font-size: 28px;
-  text-align: left;
+  text-align: justify;
 }
 
 #about .about-descr .separator {
@@ -394,6 +416,123 @@ img {
 /*-----------------------------------------------------------------------------------*/
 /*  Journal
 /*-----------------------------------------------------------------------------------*/
+
+.card {
+  background-color: #fff;
+  border: none;
+  border-radius: 0.625rem;
+  box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1); }
+  .card > .list-group:first-child .list-group-item:first-child {
+    border-top-left-radius: 0.625rem;
+    border-top-right-radius: 0.625rem; }
+  .card > .list-group:last-child .list-group-item:last-child {
+    border-bottom-right-radius: 0.625rem;
+    border-bottom-left-radius: 0.625rem; }
+  .card .list-group-item {
+    padding: 0.8125rem 1.875rem; }
+  .card .card-text {
+    margin-bottom: 1.5625rem; }
+  .card a:hover {
+    text-decoration: none; }
+  .card-small {
+    box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11), 0 4px 8px rgba(90, 97, 105, 0.12), 0 10px 10px rgba(90, 97, 105, 0.06), 0 7px 70px rgba(90, 97, 105, 0.1); }
+    .card-small .card-header,
+    .card-small .card-body,
+    .card-small .card-footer {
+      padding: 1rem 1rem; }
+
+.card-body {
+  padding: 1.875rem; }
+  .card-body > p:last-child {
+    margin-bottom: 0; }
+
+.card-title {
+  font-weight: 500;
+  margin-bottom: 0.75rem; }
+
+.card-post .card-body {
+  padding: 1.5625rem 1.5625rem; }
+
+.card-post .card-footer,
+.card-post .card-header {
+  padding-left: 1.5625rem;
+  padding-right: 1.5625rem; }
+
+.card-post__image {
+  position: relative;
+  min-height: 10.3125rem;
+  border-top-left-radius: 0.625rem;
+  border-top-right-radius: 0.625rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.card-post__author-avatar {
+  width: 2.8125rem;
+  height: 2.8125rem;
+  box-shadow: 0 0 0 0.125rem #fff, 0 0.1875rem 0.4375rem rgba(90, 97, 105, 0.5);
+  display: block;
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  text-indent: -9999px; }
+  .card-post__author-avatar--small {
+    width: 2.1875rem;
+    height: 2.1875rem; }
+
+.card-post__author-name {
+  font-weight: 500; }
+
+.card-post--aside {
+  display: flex;
+  flex-flow: row; }
+  .card-post--aside .card-post__image {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0.625rem;
+    border-bottom-left-radius: 0.625rem;
+    min-width: 180px; }
+
+.card-post--1 .card-post__author,
+.card-post--1 .card-post__category {
+  position: absolute; }
+
+.card-post--1 .card-post__author {
+  transform: translateY(50%);
+  margin-left: 1.5625rem;
+  position: absolute;
+  bottom: 0; }
+
+.card-post--1 .card-post__category {
+  top: 0.9375rem;
+  right: 0.9375rem;
+  position: absolute;
+  text-transform: uppercase; }
+
+.card-post--1 .card-body {
+  padding-top: 2.1875rem; }
+
+.card-post--1.card-post--aside .card-body {
+  padding: 1.5625rem 1.5625rem; }
+
+.card-post--1.card-post--aside .card-post__author {
+  left: 0.9375rem;
+  bottom: 0.9375rem;
+  transform: none;
+  margin: 0; }
+
+.card-post--1.card-post--aside .card-post__category {
+  right: initial;
+  top: 0.9375rem;
+  left: 0.9375rem; }
+
+p.card-text {
+  margin:0px;
+}
+
+.card-blog-single {
+  max-width: 100%;
+  height: auto; 
+}
 
 #journal,  #journal-blog {
   height: auto;

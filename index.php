@@ -17,7 +17,7 @@ function autoload($class, $dir = null) {
             autoload($class, $dir.$file.'/');
         }
         // php file
-        if (substr($file, 0, 2) !== '._' && preg_match("/.php$/i" , $file)) {
+        if (preg_match("/.php$/i" , $file)) {
             
             // filename matches class
             if (str_replace('.php', '', $file) == $class) {

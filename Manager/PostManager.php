@@ -1,15 +1,7 @@
 <?php
 
 Class PostManager extends AbstractManager
-{
-    public function rowsNumber()
-    {
-        $sql = 'SELECT COUNT(*) FROM post';
-        $result = $this->queryExecute($sql);
-        $count = $result->fetch();        
-        return $count[0];
-    }
-    
+{      
     public function findAll($limit, $offset)
     {
         $posts = [];
@@ -66,26 +58,22 @@ Class PostManager extends AbstractManager
         return $posts;
     }
     
-    public function add($title, $lead, $image, $content)
+    public function add($post)
     {
         $sql = 'INSERT INTO post (title, lead, image, content) values (?, ?, ?, ?)';
-        $this->queryExecute($sql, array($title, $lead, $image, $content));
+        $this->queryExecute($sql, array($post->getTitle(), $post->getLead(), $post->getImage(), $post->getContent(), $post->getId()));
                      
     }
     
-    public function update($title, $lead, $image, $content, $postId) {
+    public function update(Post $post) {
         $sql = 'UPDATE post SET title = ?, lead = ?, image = ?, content= ? WHERE id = ?';
-        $this->queryExecute($sql, array($title, $lead, $image, $content, $postId));
+        $this->queryExecute($sql, array($post->getTitle(), $post->getLead(), $post->getImage(), $post->getContent(), $post->getId())); 
     }
     
-    public function updateNoImg($title, $lead, $content, $postId) {
-        $sql = 'UPDATE post SET title = ?, lead = ?, content= ? WHERE id = ?';
-        $this->queryExecute($sql, array($title, $lead, $content, $postId));
-    }
     
-    public function delete($postId)
+    public function delete($post)
     {
         $sql = 'DELETE FROM post WHERE id = ?';
-        $this->queryExecute($sql, array($postId));
+        $this->queryExecute($sql, array($post->getId()));
     }
 }

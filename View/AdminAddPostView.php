@@ -1,8 +1,6 @@
 <?php 
-if($_SESSION['auth']['role'] !== 'admin') {
-    $_SESSION['error'] = 'Vous devez disposer des droits administrateurs pour accéder à cette section';
-    header("Location: index.php?action=loginView");
-}
+
+$activePage = 'addPost';
 ?>
 <div class="main-content-container container-fluid px-4">
     <div class="page-header row no-gutters py-4">

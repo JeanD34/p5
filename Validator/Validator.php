@@ -2,9 +2,18 @@
 
 class Validator {
     
-    public static function validateComment($params)
+    public static function validateUser()
     {
-        
+        if(isset($_SESSION['auth'])) {
+            return true;
+        }
+    }
+    
+    public static function validateAdmin()
+    {
+        if(isset($_SESSION['auth']) && $_SESSION['auth']['role'] == 'admin') {
+            return true;
+        }
     }
     
     

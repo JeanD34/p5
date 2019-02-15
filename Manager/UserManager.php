@@ -2,9 +2,9 @@
 
 class UserManager extends AbstractManager
 {
-    public function add($username, $email, $password, $token) {
+    public function add($user) {
         $sql = 'INSERT INTO user (username, email, password, confirmation_token) VALUES (?,?,?,?)';
-        $this->queryExecute($sql, array($username, $email, $password, $token));
+        $this->queryExecute($sql, array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getConfirmation_token()));
     }
     
     public function findToken($id) {
@@ -12,8 +12,7 @@ class UserManager extends AbstractManager
         $result = $this->queryExecute($sql, array($id));
         if ($result->rowCount() == 1) {
             $row = $result->fetch();
-            return $row;
-            
+            return $row;            
         } else {
             throw new Exception('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
         }                
@@ -34,5 +33,19 @@ class UserManager extends AbstractManager
     {
         $sql = 'UPDATE user SET confirmation_token = NULL, activated = 1 WHERE id = ?';
         $this->queryExecute($sql, array($id));
+    }
+    
+    public function find($id)
+    {
+        $sql ='SELECT * FROM user WHERE id = ?';
+        $result = $this->queryExecute($sql, array($id));
+        if ($result->rowCount() == 1) {
+            $row = $result->fetch();
+            $user = new User();
+            $user->hydrate($row);
+            return $user;
+        } else {
+            throw new Exception('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
+        } 
     }
 }

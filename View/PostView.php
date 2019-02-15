@@ -7,10 +7,12 @@
           <div class="row">
             <div class="container-main single-main">
               <div class="col-md-12">
-                <div class="block-main mb-30">
-                <?php if ($post->getImage() !== null) : ?>
-                  <img src="Content/images/<?= $post->getImage(); ?>" class="img-responsive" alt="reviews2">
-                  <?php endif; ?>
+                <div class="block-main mb-30 card-post--1">
+                  <div class="card-post__image card-blog-single""><img class="card-img-top" src="Content/images/<?= $post->getImage(); ?>"">                  
+                    <div class="card-post__author d-flex">
+                      <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/0.jpg');">Written by Anna Kunis</a>
+                    </div>
+                  </div>
                   <div class="content-main single-post padDiv">
                     <div class="journal-txt">
                       <h4><a href="#"><?= $post->getTitle(); ?></a></h4>
@@ -18,7 +20,7 @@
                     <div class="post-meta">
                       <ul class="list-unstyled mb-0">
                         <li class="author">par:<a href="#">Auteur</a></li>
-                        <li class="date">date:<a href="#">Date</a></li>
+                        <li class="date">date: Date</li>
                         <li class="commont"><i class="ion-ios-heart-outline"></i><a href="#">Nombre de commentaire</a></li>
                       </ul>
                     </div>
@@ -29,18 +31,17 @@
               <div class="col-md-12">
                 <div class="comments text-left padDiv mb-30">
                   <div class="entry-comments">
-                    <h6 class="mb-30">Doit afficher le nombre de commentaire</h6>
+                    <h6 id="comment-block" class="mb-30">Doit afficher le nombre de commentaire</h6>
                     <?php if (!empty($comments)) : ?>
                     <?php foreach ($comments as $comment) : ?>
                     <ul class="entry-comments-list list-unstyled">
                       <li>
                         <div class="entry-comments-item">
-                          <img src="Content/images/avatar.jpg" class="entry-comments-avatar" alt="">
+                          <img src="Content/backend/images/avatars/0.jpg" class="entry-comments-avatar" alt="">
                           <div class="entry-comments-body">
-                            <span class="entry-comments-author">Auteur</span>
-                            <span><a href="#">Date et heure</a></span>
+                            <span class="entry-comments-author"><a href="#">Auteur</a></span>
+                            <span>Date et heure</span>
                             <p class="mb-10" id="<?= $comment->getId(); ?>"><?= $comment->getContent(); ?></p>
-                            <a class="rep" href="#">Repondre</a>
                           </div>
                         </div>                       
                     </ul>
@@ -49,10 +50,12 @@
                   </div>
                 </div>
               </div>
+              <?php if(isset($_SESSION['auth'])) : ?>
               <div class="col-lg-12">
                 <div class="cmt padDiv">
-                  <form id="comment-form" method="post" action="index.php?action=comment#<?php if(isset($comment)) { echo $comment->getId();} ?>" role="form">
-                  <input type="hidden" name="id" value="<?= $post->getId(); ?>">
+                <div class="mb-4"><?= $_SESSION['auth']['username']?></div>
+                  <form id="comment-form" method="post" action="index.php?action=comment" role="form">
+                  <input type="hidden" name="id_post_fk" value="<?= $post->getId(); ?>">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
@@ -66,6 +69,13 @@
                   </form>
                 </div>
               </div>
+              <?php else : ?>
+              <div class="col-md-12">
+            	<div class="comments text-center p-3">
+              	<p class="login-comment"><a href="?action=loginView">Inscrivez-vous</a> ou <a href="?action=loginView">connectez vous</a> pour commenter cet article</p>
+              </div>
+              </div>
+              <?php endif; ?>
             </div>
           </div>
         </div>

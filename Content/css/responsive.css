@@ -3,7 +3,9 @@
  */
 
 @media (min-width: 1200px) {
-
+   .nav-menu {
+    display:block !important;
+  }
 }
 
 /** Width between 992px to 1199px
@@ -11,7 +13,9 @@
  */
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  
+  .nav-menu {
+    display:block !important;
+  }
 }
 
 /** Width between 768px to 991px
@@ -24,6 +28,7 @@
     padding: 10px 15px;
   }
   .nav-menu {
+    overflow: hidden;
     margin-top: 40px;
     display: none;
     float: none;
@@ -95,6 +100,7 @@
     padding: 20px 15px;
   }
   .nav-menu {
+    overflow: hidden;
     margin-top: 40px;
     display: none;
     float: none;
@@ -121,7 +127,7 @@
   }
 
   #about {
-    padding-top: 80px;
+    padding-top: 190px;
   }
 
   #about .div-img-bg {
@@ -171,6 +177,7 @@
     padding: 20px 15px;
   }
   .nav-menu {
+    overflow: hidden;
     margin-top: 40px;
     display: none;
     float: none;
@@ -246,6 +253,7 @@
     display: none;
     float: none;
     width: 100%;
+    overflow: hidden;
   }
   .nav-menu li {
     float: none;
@@ -267,7 +275,7 @@
     font-size: 32px;
   }
   #about .div-img-bg {
-    padding-bottom: : 30px;
+    padding-bottom: 30px;
   }
   #about .div-img-bg .about-img img {
     margin-top: 0%;
@@ -312,6 +320,7 @@
     padding: 20px 15px;
   }
   .nav-menu {
+    overflow: hidden;
     margin-top: 40px;
     display: none;
     float: none;

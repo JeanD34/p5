@@ -11,10 +11,10 @@ class PostController {
         $this->commentManager = new CommentManager();
     }
     
-    public function post($postId) 
+    public function post() 
     {
-        $post = $this->postManager->find($postId);
-        $comments = $this->commentManager->findAll($postId);
+        $post = $this->postManager->find($_REQUEST['id']);
+        $comments = $this->commentManager->findAll($_REQUEST['id']);
         $view = new View("Post");
         $view->generate(array('post' => $post, 'comments' => $comments));
     }
@@ -24,35 +24,11 @@ class PostController {
         $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
         $limit = 6;
         $offset = ($page - 1) * $limit;
-        $totalPosts = $this->postManager->rowsNumber();
+        $totalPosts = $this->postManager->rowsNumber('post');
         $totalPages = ceil($totalPosts/$limit);
         $posts = $this->postManager->findAll($limit, $offset);
         $view = new View('Posts');
         $view->generate(array('posts' => $posts, 'page' => $page, 'totalPages' => $totalPages));
-    }
-    
-    
-    public function comment($content, $postId) 
-    {
-        
-        $this->commentManager->add($content, $postId);
-        //$this->post($postId);
-        header("location: ?action=post&id=$postId");
-        exit();
-    }
-    
-    public function validateComment($commentId)
-    {
-        $this->commentManager->validate($commentId);
-        header("Location: ?action=admin");
-        exit();
-    }
-    
-    public function deleteComment($commentId)
-    {
-        $this->commentManager->delete($commentId);
-        header("Location: ?action=admin");
-        exit();
     }
     
     public function admin() {
@@ -68,52 +44,58 @@ class PostController {
         $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
         $limit = 8;
         $offset = ($page - 1) * $limit;
-        $totalPosts = $this->postManager->rowsNumber();
+        $table = 'post';
+        $totalPosts = $this->postManager->rowsNumber($table);
         $totalPages = ceil($totalPosts/$limit);
         $posts = $this->postManager->findAll($limit, $offset);
         $view = new View('AdminPosts');
         $view->generate(array('posts' => $posts, 'page' => $page, 'totalPages' => $totalPages));
     }
-    
+
     public function addView()
     {
         $view = new View('AdminAddPost');
         $view->generate(array());
     }
     
-    public function postForm($postId) {
+    public function postForm() {
         
-        $post = $this->postManager->find($postId);
+        $post = $this->postManager->find($_REQUEST['id']);
         $view = new View("AdminUpdate");
         $view->generate(array('post' => $post));
     }
     
-    
-    public function addPost($title, $lead, $image, $content)
+    public function addPostValidation() 
     {
-        $this->postManager->add($title, $lead, $image, $content);
-        header("location: ?action=admin");
+        $post = new Post();
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $_REQUEST['image'] = Validator::validatePostImage($_FILES['image']);
+        } else {
+            $_REQUEST['image'] = 'default.jpg';
+        }
+        $post->hydrate($_REQUEST);
+        $this->postManager->add($post);
+        header("location: ?action=adminPosts");
         exit();
     }
     
-    public function updatePost($title, $lead, $image, $content, $postId)
+    public function updatePostValidation() 
     {
-        $this->postManager->update($title, $lead, $image, $content, $postId);
-        header("Location: ?action=post&id=$postId");
-        exit();
-    }
+        $post = $this->postManager->find($_REQUEST['id']);
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {      
+            $_REQUEST['image'] = Validator::validatePostImage($_FILES['image']);
+        }
+        $post->hydrate($_REQUEST);
+        $this->postManager->update($post);
+        header("Location: ?action=adminPosts");
+        exit();     
+    }        
     
-    public function updatePostNoImg($title, $lead, $content, $postId)
+    public function deletePost()
     {
-        $this->postManager->updateNoImg($title, $lead, $content, $postId);
-        header("Location: ?action=post&id=$postId");
-        exit();
-    }
-    
-    public function deletePost($postId)
-    {
-        $this->postManager->delete($postId);
-        header("Location: ?action=admin");
+        $post = $this->postManager->find($_REQUEST['id']);
+        $this->postManager->delete($post);
+        header("Location: ?action=adminPosts");
         exit();
     }
 }

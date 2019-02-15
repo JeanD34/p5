@@ -129,8 +129,7 @@ h6, .h6 {
   line-height: 1; }
 
 body > main > div.main-content-container.container-fluid.px-4 > div:nth-child(2) > div > div > div > form > p {
-  margin-bottom: 0.3rem;
-}
+  margin-bottom: 0.3rem; }
 
 p {
   margin-bottom: 1.75rem; }
@@ -401,6 +400,10 @@ form label:hover {
   padding-bottom: 0.4375rem;
   line-height: 1.5;
   font-weight: 300; }
+
+button.btn.btn-white.confirm {
+  color : #007bff;
+}
 
 .form-control-sm, .input-group-sm > .form-control,
 .input-group-sm > .input-group-prepend > .input-group-text,
@@ -2160,6 +2163,13 @@ i.material-icons {
     color: white; }
     .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
       color: white; }
+
+body > main > div.col.mb-4 > div {
+  min-height: 400px;
+}
+body > main > div.main-content-container.container-fluid.px-4 > div.col.mb-4 > div {
+  min-height: 400px;
+}
 
 .card {
   background-color: #fff;
@@ -4471,9 +4481,7 @@ a.text-accent:hover, a.text-accent:focus {
 .blog-comments__item {
   padding: 0;
   border-bottom: 1px solid #e1e5eb; }
-  .blog-comments__item:last-child {
-    border: 0; }
-
+  
 .blog-comments__actions {
   font-size: 95%; }
   .blog-comments__actions .btn-group button {

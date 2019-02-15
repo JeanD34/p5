@@ -1,9 +1,7 @@
 <?php 
 
-if($_SESSION['auth']['role'] !== 'admin') {
-    $_SESSION['error'] = 'Vous devez disposer des droits administrateurs pour accéder à cette section';
-    header("Location: index.php?action=loginView");
-}
+
+$activePage = 'updatePost';
 ?>
 <div class="main-content-container container-fluid px-4">
             <!-- Page Header -->
@@ -23,10 +21,10 @@ if($_SESSION['auth']['role'] !== 'admin') {
                       <input class="form-control form-control-lg mb-3" type="text" name="title" value="<?= $post->getTitle(); ?>">
                       <input class="form-control form-control-lg mb-3" type="text" name="lead" value="<?= $post->getLead(); ?>">
                       <input class="form-control form-control-lg mb-3" type="file" name="image">
-                      <?php if($post->getImage() != null) :?>
+
                     	<p class="mb-3">Image actuelle de l'article :</p>
                         <img class="mb-3" src="./Content/images/<?= $post->getImage() ?>"width="50%" height="50%">
-            		<?php endif ?>
+
             		<textarea class="form-control form-control-lg mb-3"  rows="10" name="content"><?= $post->getContent(); ?></textarea>
             		<button type="submit" class="btn btn-sm btn-accent ml-auto">
                           <i class="material-icons">file_copy</i>Modifier article</button>

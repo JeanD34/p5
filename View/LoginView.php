@@ -1,8 +1,10 @@
 <div class="container paddsections">
 <?php 
-if(isset($_SESSION['error'])) {
-    echo $_SESSION['error'];
-    unset($_SESSION['error']);
+if(isset($_REQUEST['error'])) {
+    $error = $_REQUEST['error'];
+}
+if(isset($error)) {
+    echo $error;
 }
 ?>
     <div class="row">    	
@@ -32,11 +34,11 @@ if(isset($_SESSION['error'])) {
             <form action="?action=login" method="post">
               <div class="form-group">
                 <label for="current-username">Pseudo</label>
-                <input type="text" class="form-control" id="current-username" name="current-username" autocomplete="username" placeholder="Pseudo">   
+                <input type="text" class="form-control" id="current-username" name="username" autocomplete="username" placeholder="Pseudo">   
               </div>
               <div class="form-group">
                 <label for="current-password">Mot de Passe</label>
-                <input type="password" class="form-control" id="current-password" name="current-password" autocomplete="current-password" placeholder="Mot de passe">
+                <input type="password" class="form-control" id="current-password" name="password" autocomplete="current-password" placeholder="Mot de passe">
               </div>
               <button type="submit" class="btn btn-primary">Se connecter</button>
             </form>

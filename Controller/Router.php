@@ -5,23 +5,36 @@ class Router
     private $homeController;
     private $postController;
     private $userController;
+    private $commentController;
     
     public function __construct() 
     {
         $this->homeController = new HomeController();
         $this->postController = new PostController();
         $this->userController = new UserController();
-        
+        $this->commentController = new CommentController();
     }
     
     public function queryRouting() 
     {
         try {
-            if (isset($_GET['action'])) {
-               switch ($_GET['action']) {
+            if (isset($_REQUEST['action'])) {
+                $loggedAction = array('comment','validateComment', 'editCommentView', 'editComment', 'deleteComment', 'adminComments', 'profile', 'logout', 'admin', 'adminPosts', 'deletePost', 'updateView', 'updatePost', 'addPostView', 'addPost');
+                $loggedAdminAction = array('validateComment', 'adminComments', 'admin', 'adminPosts', 'deletePost','updateView', 'updatePost', 'addPostView', 'addPost');
+                if (in_array($_REQUEST['action'], $loggedAction)) {
+                    if (!Validator::validateUser()) {
+                        throw new LoginException('Veuillez vous connecter pour effectuer cette action');
+                    }
+                }
+                if (in_array($_REQUEST['action'], $loggedAdminAction)) {
+                    if (!Validator::validateAdmin()) {
+                        throw new LoginException('Vous ne disposez pas des droits pour effectuer cette action');
+                    }
+                }
+               switch ($_REQUEST['action']) {
                     case 'post':
-                        if(isset($_GET['id'])) {  
-                            $this->postController->post($_GET['id']);
+                        if(isset($_REQUEST['id'])) {  
+                            $this->postController->post();
                         } else {
                             throw new Exception('Numéro article inexistant');
                         }
@@ -30,20 +43,29 @@ class Router
                         $this->postController->posts();
                         break;
                     case 'comment':
-                        //Validator::validateComment($_POST);
-                        $this->postController->comment($_POST['content'], $_POST['id']);
+                        //Validator::validateComment($_REQUEST);                       
+                        $this->commentController->comment();
                         break;
                     case 'validateComment':
-                        $this->postController->validateComment($_POST['id']);
+                        $this->commentController->validateComment();
+                        break;
+                    case 'editCommentView':
+                        $this->commentController->updateCommentView();
+                        break;
+                    case 'editComment':
+                        $this->commentController->updateComment();
                         break;
                     case 'deleteComment':
-                        $this->postController->deleteComment($_POST['id']);
+                        $this->commentController->deleteComment();
+                        break;
+                    case 'adminComments':
+                        $this->commentController->adminComments();
                         break;
                     case 'loginView':
                         $this->userController->loginView();
                         break;
                     case 'login':
-                        $this->userController->login($_POST['current-username'], $_POST['current-password']);
+                        $this->userController->login();
                         break;
                     case 'profile':
                         $this->userController->profile();
@@ -52,10 +74,10 @@ class Router
                         $this->userController->logout();
                         break;
                     case 'confirmUser':
-                        $this->userController->confirmationUser($_GET['id'], $_GET['token']);
+                        $this->userController->confirmationUser();
                         break;
                     case 'addUser':
-                        $this->userController->addUser($_POST['username'], $_POST['email'], $_POST['password']);
+                        $this->userController->addUser();
                         break;
                     case 'admin':
                         $this->postController->admin();
@@ -64,29 +86,18 @@ class Router
                         $this->postController->adminPosts();
                         break;
                     case 'deletePost':
-                        $this->postController->deletePost($_POST['id']);
+                        $this->postController->deletePost();
                         break;
                     case 'updateView':
-                        $this->postController->postForm($_GET['id']);
+                        $this->postController->postForm();
                         break;
                     case 'updatePost':
-                        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                            $image = Validator::validatePostImage($_FILES['image']);
-                            $this->postController->updatePost($_POST['title'], $_POST['lead'], $image, $_POST['content'], $_POST['id']);
-                        } else {
-                            $this->postController->updatePostNoImg($_POST['title'], $_POST['lead'], $_POST['content'], $_POST['id']);
-                        }                       
-                        break;
+                        $this->postController->updatePostValidation();          
                     case 'addPostView':
                         $this->postController->addView();
                         break;
-                    case 'addPost':
-                        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                            $image = Validator::validatePostImage($_FILES['image']);
-                        } else {
-                            $image = 'default.jpg';
-                        }
-                        $this->postController->addPost($_POST['title'], $_POST['lead'], $image, $_POST['content']);
+                    case 'addPost':                       
+                        $this->postController->addPostValidation();
                         break; 
                     default:
                         throw new Exception('Action invalide');
@@ -95,6 +106,8 @@ class Router
             } else {
                 $this->homeController->home();
             }
+        } catch (LoginException $e) {
+            $this->userController->errorConnecting($e->getMessage());
 
         } catch (Exception $e) {
             $this->error($e->getMessage());

@@ -13,8 +13,11 @@
           <li><a href="https://linkedin.com/in/jeandescorps/"><i class="ion-social-linkedin"></i></a></li>
           <li><a href="https://github.com/JeanD34"><i class="ion-social-github"></i></a></li>
         </ul>
+    	<div class="down text-center"><a class="down" href="#about"><i class="fa fa-angle-down fa-5x"></i></a></div>
       </div>
+      
     </div>
+    
   </div>
   <!-- End section header -->
   
@@ -23,8 +26,8 @@
     <div class="container">
       <div class="row justify-content-between">
 
-        <div class="col-lg-4">
-			<img class="div-img-bg" height="350px" width="350px" src="Content/images/logo-about.png" class="img-responsive" alt="logo">
+        <div class="col-lg-4 col-9" style="margin: auto;">
+			<img class="div-img-bg" src="Content/images/logo-about.png" alt="logo">
         </div>
 
         <div class="col-lg-7">
@@ -50,49 +53,49 @@
 
           <div class="services-block">
 
-            <i class="ion-ios-browsers-outline"></i>
-            <span>UI/UX DESIGN</span>
-            <p class="separator">To an English person, it will seem like simplified English,told me what </p>
+            <i class="ion-hammer"></i>
+            <span>PHP</span>
+            <p class="separator">PHP est un langage de programmation libre, considéré comme une des bases de la création de sites web dits dynamiques mais également des applications web.</p>
 
           </div>
 
           <div class="services-block">
 
-            <i class="ion-ios-lightbulb-outline"></i>
-            <span>BRAND IDENTITY</span>
-            <p class="separator">To an English person, it will seem like simplified English,told me what </p>
+            <i class="ion-archive"></i>
+            <span>SQL</span>
+            <p class="separator">SQL est un langage informatique normalisé servant à exploiter des bases de données relationnelles.</p>
 
           </div>
 
           <div class="services-block">
 
-            <i class="ion-ios-color-wand-outline"></i>
-            <span>WEB DESIGN</span>
-            <p class="separator">To an English person, it will seem like simplified English,told me what </p>
+            <i class="ion-social-html5-outline"></i>
+            <span>HTML</span>
+            <p class="separator">L’HyperText Markup Language, généralement abrégé HTML, est le langage de balisage conçu pour représenter les pages web.</p>
 
           </div>
 
           <div class="services-block">
 
-            <i class="ion-social-android-outline"></i>
-            <span>MOBILE APPS</span>
-            <p class="separator">To an English person, it will seem like simplified English,told me what </p>
+            <i class="ion-social-css3-outline"></i>
+            <span>CSS</span>
+            <p class="separator">Les feuilles de style en cascade, généralement appelées CSS de l'anglais Cascading Style Sheets, forment un langage informatique qui décrit la présentation des documents HTML et XML.</p>
 
           </div>
 
           <div class="services-block">
 
-            <i class="ion-ios-analytics-outline"></i>
-            <span>Analytics</span>
-            <p class="separator">To an English person, it will seem like simplified English,told me what </p>
+            <i class="ion-social-javascript-outline"></i>
+            <span>JavaScript</span>
+            <p class="separator">JavaScript est un langage de programmation de scripts principalement employé dans les pages web interactives mais aussi pour les serveurs avec l'utilisation (par exemple) de Node.js.</p>
 
           </div>
 
           <div class="services-block">
 
-            <i class="ion-ios-camera-outline"></i>
-            <span>PHOTOGRAPHY</span>
-            <p class="separator">To an English person, it will seem like simplified English,told me what </p>
+            <i class="ion-ios-cog-outline"></i>
+            <span>Symfony</span>
+            <p class="separator">Symfony est un ensemble de composants PHP ainsi qu'un framework MVC libre écrit en PHP. Il fournit des fonctionnalités modulables et adaptables qui permettent de faciliter et d’accélérer le développement d'un site web.</p>
 
           </div>
 
@@ -115,21 +118,22 @@
       <div class="journal-block">
         <div class="row">
 			<?php foreach ($posts as $post) : ?>	
-          <div class="col-lg-4 col-md-6">
-            <div class="journal-info">
-				<?php if (!empty($post->getImage())) : ?>
-              <a href="?action=post&id=<?= $post->getId(); ?>"><img src="Content/images/<?= $post->getImage(); ?>" class="img-responsive" alt="img"></a>
-				<?php endif; ?>
-              <div class="journal-txt">
-
-                <h4><a href="?action=post&id=<?= $post->getId(); ?>"><?= $post->getTitle(); ?></a></h4>
-                <p class="separator"><?= $post->getLead(); ?>
-                </p>
-
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card card-small card-post card-post--1">
+                  <div class="card-post__image" style="background-image: url('Content/images/<?= $post->getImage(); ?>');">                  
+                    <div class="card-post__author d-flex">
+                      <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/0.jpg');">Written by Anna Kunis</a>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <a class="text-fiord-blue" href="?action=post&id=<?= $post->getId(); ?>"><?= $post->getTitle(); ?></a>
+                    </h5>
+                    <p class="card-text d-inline-block mb-3"><?= $post->getLead(); ?></p><br>
+                    <span class="text-muted">28 February 2019</span>                   
+            		</div>
+                </div>
               </div>
-
-            </div>
-          </div>
           <?php endforeach; ?>
         </div>
       </div>

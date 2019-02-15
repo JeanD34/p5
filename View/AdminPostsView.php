@@ -1,8 +1,6 @@
 <?php
-if($_SESSION['auth']['role'] !== 'admin') {
-    $_SESSION['error'] = 'Vous devez disposer des droits administrateurs pour accéder à cette section';
-    header("Location: index.php?action=loginView");
-}
+
+$activePage = 'posts';
 ?>
           <div class="main-content-container container-fluid px-4">
             <!-- Page Header -->
@@ -30,23 +28,19 @@ if($_SESSION['auth']['role'] !== 'admin') {
                     <span class="text-muted">28 February 2019</span>
                     <div class="blog-comments__actions mt-3">
                       <div class="btn-group btn-group-sm">
-                      <form method="post" action="?action=updateView&id=<?= $post->getId(); ?>">
                         <button type="submit" class="btn btn-white">
                           <span class="text-success">
                             <i class="material-icons">more_vert</i>
-                          </span> Modifier </button>
-                      </form>
+                          </span> <a href="?action=updateView&id=<?= $post->getId(); ?>">Modifier</a> </button>
                         <button type="submit" class="btn btn-white confirm" data-toggle="modal" data-target="#confirmModal" data-id="<?= $post->getId(); ?>">
                           <span class="text-danger">
                             <i class="material-icons">clear</i>
-                          </span> Supprimer </button>
+                          </span> <a href="">Supprimer</a> </button>
                       </form>                      
-                      <form method="post" action="?action=post&id=<?= $post->getId(); ?>">
                         <button type="submit" class="btn btn-white">
                           <span class="text-light">
                             <i class="material-icons">arrow_right_alt</i>
-                          </span> Consulter </button>
-                      </form>
+                          </span> <a href="?action=post&id=<?= $post->getId(); ?>">Consulter</a> </button>
                       </div>
                   	</div>                  
             		</div>
@@ -66,30 +60,4 @@ if($_SESSION['auth']['role'] !== 'admin') {
         		<?php endif; ?>
             </div>
             
-            <!-- Modal -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalTitle">Suppression</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    Voulez vous vraiment supprimer cet article?
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                    <form method="post" action="?action=deletePost">
-                      <input type="hidden" name="id" id="id" value="">
-                        <button type="submit" class="btn btn-white">
-                          <span class="text-danger">
-                            <i class="material-icons">clear</i>
-                          </span> Supprimer </button>
-                      </form>                   
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- /Modal -->
+			<?php include_once 'ModalPostView.php';?>

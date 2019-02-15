@@ -30,7 +30,7 @@ $(document).ready(function () {
         target = $(target);
 
         $('html, body').stop().animate({
-            'scrollTop': target.offset().top - 80
+            'scrollTop': target.offset().top
         }, 500, 'swing', function () {
             window.location = "index.php" + target_url;
             $(document).on("scroll", onScroll);

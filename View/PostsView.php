@@ -12,18 +12,22 @@
       <div class="journal-block">
         <div class="row">
         <?php foreach ($posts as $post) : ?>
-        <div class="col-lg-4 col-md-6">
-            <div class="journal-info mb-30">
-				<?php if ($post->getImage() !== null) : ?>
-              <a href="?action=post&id=<?= $post->getId();?>"><img src="Content/images/<?= $post->getImage(); ?>" class="img-responsive" alt="img"></a>
-				<?php endif; ?>
-              <div class="journal-txt">
-                <h4><a href="?action=post&id=<?= $post->getId();?>"><?= $post->getTitle(); ?></a></h4>
-                <p class="separator"><?= $post->getLead(); ?>
-                </p>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card card-small card-post card-post--1">
+                  <div class="card-post__image" style="background-image: url('Content/images/<?= $post->getImage(); ?>');">                  
+                    <div class="card-post__author d-flex">
+                      <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/0.jpg');">Written by Anna Kunis</a>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <a class="text-fiord-blue" href="?action=post&id=<?= $post->getId(); ?>"><?= $post->getTitle(); ?></a>
+                    </h5>
+                    <p class="card-text d-inline-block mb-3"><?= $post->getLead(); ?></p><br>
+                    <span class="text-muted">28 February 2019</span>                   
+            		</div>
+                </div>
               </div>
-            </div>
-          </div>
           <?php endforeach; ?>         	
         </div>
         <?php if ($page > 1) : ?>

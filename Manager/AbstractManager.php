@@ -6,8 +6,9 @@ abstract class AbstractManager
     
     private function getBdd() 
     {
+        $database = require 'Config/Config.php';
         if ($this->bdd == null) {
-            $this->bdd = new PDO('mysql:host=localhost;dbname=test_mvc_poo;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING)); ;
+            $this->bdd = new PDO("mysql:host=". $database['host'] .";dbname=". $database['name'] .";charset=utf8", $database['user'], $database['pass'], array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
         }
         return $this->bdd;
     }
@@ -33,9 +34,17 @@ abstract class AbstractManager
         return $result;
     }
     
-    protected function lastId()
+    public function lastId()
     {
         $result = $this->getBdd()->lastInsertId();
         return $result;
+    }
+    
+    public function rowsNumber($table)
+    {
+        $sql = 'SELECT COUNT(*) FROM' . $table;
+        $result = $this->queryExecute($sql);
+        $count = $result->fetch();
+        return $count[0];
     }
 }
