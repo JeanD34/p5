@@ -45,7 +45,7 @@ class UserController
         $user_id = $this->userManager->lastId();
         $token = $_REQUEST['confirmation_token'];
         $subject = 'Confirmation creation compte';
-        $content = "Pour confirmer votre compte veuillez cliquer sur ce lien http://localhost/eclipse/test_mvc_poo/index.php?action=confirmUser&id=$user_id&token=$token";
+        $content = "Pour confirmer votre compte veuillez cliquer sur ce lien http://localhost/blog/index.php?action=confirmUser&id=$user_id&token=$token";
         mail($_REQUEST['email'], $subject, $content);
         $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer";
         $view = new View("Login");
@@ -73,10 +73,36 @@ class UserController
         $view = new View("AdminUser");
         $view->generate(array('user' => $user, 'userComments' => $userComments));
     }
+
+    public function userComments()
+    {
+        $user = $this->userManager->find($_SESSION['auth']['id']);
+        $userComments = $this->commentManager->findAllUserComments($user->getId());
+        $view = new View("AdminUserComments");
+        $view->generate(array('user' => $user, 'userComments' => $userComments));
+    }
+
+    public function updateAccount()
+    {
+        $user = $this->userManager->find($_SESSION['auth']['id']);
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {      
+            $_REQUEST['avatar'] = Validator::validateAvatar($_FILES['avatar']);
+        }
+        if (empty($_REQUEST['password'])) {
+            $_REQUEST['password'] = $user->getPassword();
+        } else {
+            $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
+        }
+        $user->hydrate($_REQUEST);
+        $this->userManager->update($user);
+        header("Location: ?action=profile");
+        exit();
+    }
     
     public function errorConnecting($error) 
     {
-        header("Location: ?action=loginView&error=$error");
+        $view = new View("Login");
+        $view->generate(array('error' => $error));
     }
     
     public function logout() 
