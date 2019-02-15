@@ -4121,6 +4121,10 @@ a.text-accent:hover, a.text-accent:focus {
 .border-accent {
   border-color: #007bff !important; }
 
+  body > main > div.main-navbar.sticky-top.bg-white > nav > ul {
+  	    min-width: 10.08rem;
+  }
+
 .main-navbar .navbar {
   height: 3.75rem; }
   .main-navbar .navbar > * {
