@@ -32,26 +32,57 @@ class CommentController {
     public function updateCommentView()
     {
         $comment = $this->commentManager->find($_REQUEST['id']);
-        $view = new View('AdminUpdateComment');
-        $view->generate(array('comment' => $comment));
+        if($_SESSION['auth']['role'] !== 'admin') {
+            if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
+                throw new Exception('Vous essayez de modifier un article qui ne vous appartient pas !');
+            } else {
+                $view = new View('AdminUpdateComment');
+                $view->generate(array('comment' => $comment));
+            }
+        } else {            
+            $view = new View('AdminUpdateComment');
+            $view->generate(array('comment' => $comment));
+        }
         
     }
     
     public function updateComment()
     {
         $comment = $this->commentManager->find($_REQUEST['id']);
-        $comment->hydrate($_REQUEST);
-        $this->commentManager->update($comment);
-        header("Location: ?action=adminComments");
-        exit();
+        if($_SESSION['auth']['role'] !== 'admin') {
+            if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
+                throw new Exception('Vous essayez de modifier un article dont vous n\'êtes pas l\'auteur !');
+            } else {
+                $comment->hydrate($_REQUEST);
+                $this->commentManager->userUpdate($comment);
+                header("Location: ?action=profile");
+                exit();
+            }
+        } else {
+            $comment->hydrate($_REQUEST);
+            $this->commentManager->update($comment);
+            header("Location: ?action=adminComments");
+            exit();
+        }
+
     }
     
     public function deleteComment()
     {
         $comment = $this->commentManager->find($_REQUEST['id']);
-        $this->commentManager->delete($comment);
-        header("Location: ?action=adminComments");
-        exit();
+        if($_SESSION['auth']['role'] !== 'admin') {
+            if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
+                throw new Exception('Vous essayez de supprimer un article dont vous n\'êtes pas l\'auteur !');
+            } else {
+                $this->commentManager->delete($comment);
+                header("Location: ?action=profile");
+                exit();
+            }
+        } else {
+            $this->commentManager->delete($comment);
+            header("Location: ?action=adminComments");
+            exit();
+        }
     }
     
     public function adminComments()
