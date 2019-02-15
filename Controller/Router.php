@@ -61,11 +61,17 @@ class Router
                     case 'adminComments':
                         $this->commentController->adminComments();
                         break;
+                    case 'userComments':
+                        $this->userController->userComments();
+                        break;
                     case 'loginView':
                         $this->userController->loginView();
                         break;
                     case 'login':
                         $this->userController->login();
+                        break;
+                    case 'updateAccount':
+                        $this->userController->updateAccount();
                         break;
                     case 'profile':
                         $this->userController->profile();
