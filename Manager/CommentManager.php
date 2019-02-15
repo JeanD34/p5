@@ -65,6 +65,22 @@ class CommentManager extends AbstractManager
             throw new Exception('Le commentaire numéro ' . $commentId . ' n\'existe pas.');
         }
     }
+
+    public function findAllUserComments($userId)
+    {
+        $userComments = [];
+        $sql = 'SELECT * FROM comment WHERE validated = 1 AND id_user_fk = ?';
+        $result = $this->queryExecute($sql, array($userId));
+        if ($result->rowCount() >= 1) {
+            foreach ($result->fetchAll() as $row) {
+                $comment = new Comment();
+                $comment->hydrate($row);
+                $userComments[] = $comment;
+            }
+        }
+        
+        return $userComments;
+    }
     
     public function findLastThree() 
     {   
@@ -79,8 +95,7 @@ class CommentManager extends AbstractManager
             }
         }
         
-        return $comments;
-        
+        return $comments;        
     }
     
     public function findLastUserComment($id) {
@@ -113,6 +128,12 @@ class CommentManager extends AbstractManager
     public function update($comment)
     {
         $sql ='UPDATE comment SET content = ? WHERE id = ?';
+        $this->queryExecute($sql, array($comment->getContent(), $comment->getId()));
+    }
+
+    public function userUpdate($comment)
+    {
+        $sql ='UPDATE comment SET content = ?, validated = 0 WHERE id = ?';
         $this->queryExecute($sql, array($comment->getContent(), $comment->getId()));
     }
     
