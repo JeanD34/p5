@@ -5,7 +5,7 @@ Class PostManager extends AbstractManager
     public function findAll($limit, $offset)
     {
         $posts = [];
-        $sql = 'SELECT * FROM post ORDER BY id DESC LIMIT :limit OFFSET :offset';
+        $sql = 'SELECT post.id, title, image, lead, content, add_date, id_user_fk, username, avatar FROM post JOIN user ON post.id_user_fk = user.id ORDER BY post.id DESC LIMIT :limit OFFSET :offset';
         $result = $this->queryExecuteInt($sql, array('limit' => $limit, 'offset' => $offset));
         foreach ($result->fetchAll() as $row) {
             $post = new Post();
@@ -34,7 +34,7 @@ Class PostManager extends AbstractManager
     
     public function findLast()
     {
-        $sql = 'SELECT id, title, image, lead FROM post ORDER BY id DESC LIMIT 3';
+        $sql = 'SELECT post.id, title, image, lead, id_user_fk, add_date, username, avatar FROM post JOIN user ON post.id_user_fk = user.id ORDER BY post.id DESC LIMIT 3';
         $result = $this->queryExecute($sql);
         foreach ($result->fetchAll() as $row) {
             $post = new Post();
@@ -47,7 +47,7 @@ Class PostManager extends AbstractManager
     
     public function findLastFour()
     {
-        $sql = 'SELECT id, title, image, lead FROM post ORDER BY id DESC LIMIT 4';
+        $sql = 'SELECT post.id, title, image, lead, id_user_fk, add_date, username, avatar FROM post JOIN user ON post.id_user_fk = user.id ORDER BY post.id DESC LIMIT 4';
         $result = $this->queryExecute($sql);
         foreach ($result->fetchAll() as $row) {
             $post = new Post();
@@ -60,8 +60,8 @@ Class PostManager extends AbstractManager
     
     public function add($post)
     {
-        $sql = 'INSERT INTO post (title, lead, image, content) values (?, ?, ?, ?)';
-        $this->queryExecute($sql, array($post->getTitle(), $post->getLead(), $post->getImage(), $post->getContent(), $post->getId()));
+        $sql = 'INSERT INTO post (title, lead, image, content, add_date, id_user_fk) values (?, ?, ?, ?, NOW(), ?)';
+        $this->queryExecute($sql, array($post->getTitle(), $post->getLead(), $post->getImage(), $post->getContent(), $post->getId_user_fk()));
                      
     }
     
