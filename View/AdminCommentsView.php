@@ -16,19 +16,24 @@
                     <?php $i = 0; ?>
                     <?php $nbInvaComment = count($invalidateComments);?>
                     <?php foreach ($invalidateComments as $comment) : ?>
+                    <?php 
+                    $dateCommentInv = new DateTime($comment->getAdd_date());
+                    $now = new DateTime();
+                    $dayCommentInv = $dateCommentInv->diff($now)->format("%d");
+                    ?>
                         <?php if ($i % 3 == 0) : ?>
                         	<div class="col-lg-4 col-md-6 col-sm-12 mb-md-4">
                         <?php endif; ?>                
                     	<?php $i++; ?>                  
                     	<div class="blog-comments__item d-flex p-3">
                             <div class="blog-comments__avatar mr-3">
-                            	<img src="Content/backend/images/avatars/1.jpg" alt="User avatar" /> 
+                            	<img src="Content/backend/images/avatars/<?= $comment->getAvatar(); ?>" alt="Avatar" /> 
                             </div>
                         	<div class="blog-comments__content">
                         		<div class="blog-comments__meta text-muted">
-                                    <a class="text-secondary" href="#">Pseudo</a> sur
-                                    <a class="text-secondary" href="#">Nom Article</a>
-                        			<span class="text-muted">– il y a "x" jours</span>
+                                    <a class="text-secondary" target="_blank" href="?action=userProfile&id=<?= $comment->getId_user_fk(); ?>"><?= $comment->getUsername(); ?></a> sur
+                                    <a class="text-secondary" target="_blank" href="?action=post&id=<?= $comment->getId_post_fk(); ?>"><?= $comment->getTitle(); ?></a>
+                        			<span class="text-muted">– il y a <?= $dayCommentInv ?> jours</span>
                    			 	</div>
                     			<p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
                         		<div class="blog-comments__actions">
@@ -71,19 +76,24 @@
                     <?php $i = 0; ?>
                     <?php $nbVaComment = count($validateComments);?>
                     <?php foreach ($validateComments as $comment) : ?>
+                    <?php 
+                    $dateCommentVal = new DateTime($comment->getAdd_date());
+                    $now = new DateTime();
+                    $dayCommentVal = $dateCommentVal->diff($now)->format("%d");
+                    ?>
                         <?php if ($i % 3 == 0) : ?>
                     		<div class="col-lg-4 col-md-6 col-sm-12 mb-md-4">
                         <?php endif; ?>                
                     	<?php $i++; ?>
                         <div class="blog-comments__item d-flex p-3">
                             <div class="blog-comments__avatar mr-3">
-                            	<img src="Content/backend/images/avatars/1.jpg" alt="User avatar" /> 
+                            	<img src="Content/backend/images/avatars/<?= $comment->getAvatar(); ?>" alt="Avatar" /> 
                             </div>
                             <div class="blog-comments__content">
                                 <div class="blog-comments__meta text-muted">
-                                    <a class="text-secondary" href="#">Pseudo</a> sur
-                                    <a class="text-secondary" href="#">Nom Article</a>
-                                    <span class="text-muted">– il y a "x" jours</span>
+                                    <a class="text-secondary" target="_blank" href="?action=userProfile&id=<?= $comment->getId_user_fk(); ?>"><?= $comment->getUsername(); ?></a> sur
+                                    <a class="text-secondary" target="_blank" href="?action=post&id=<?= $comment->getId_post_fk(); ?>#<?= $comment->getId(); ?>"><?= $comment->getTitle(); ?></a>
+                                    <span class="text-muted">– il y a <?= $dayCommentVal ?> jours</span>
                                 </div>
                                 <p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
                                 <div class="blog-comments__actions">
