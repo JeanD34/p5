@@ -1,6 +1,3 @@
-<?php 
-
-?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -10,8 +7,8 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Jean Descorps<?= ' - ' . $this->title; ?></title>
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+  <meta content="blog, Jean Descorps, développement, web,développement web" name="keywords">
+  <meta content="Blog de Jean Descorps concernant le développement web" name="description">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet">
