@@ -13,7 +13,7 @@
                 <div class="card card-small card-post card-post--1">
                   <div class="card-post__image" style="background-image: url('Content/images/<?= $post->getImage(); ?>');">                  
                     <div class="card-post__author d-flex">
-                      <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/0.jpg');">Written by Anna Kunis</a>
+                      <a href="?action=userProfile&id=<?= $post->getId_user_fk(); ?>" target="_blank" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/<?= $post->getAvatar(); ?>');">Ecrit par <?= $post->getUsername(); ?></a>
                     </div>
                   </div>
                   <div class="card-body">
@@ -21,7 +21,7 @@
                       <a class="text-fiord-blue" href="?action=updateView&id=<?= $post->getId(); ?>"><?= $post->getTitle(); ?></a>
                     </h5>
                     <p class="card-text d-inline-block mb-3"><?= $post->getLead(); ?></p><br>
-                    <span class="text-muted">28 February 2019</span>
+                    <span class="text-muted"><?= ucfirst(utf8_encode(strftime('%A %e %B %Y', strtotime($post->getAdd_date())))); ?></span>
                     <div class="blog-comments__actions mt-3">
                       <div class="btn-group btn-group-sm">
                         <button type="submit" class="btn btn-white">
@@ -36,7 +36,7 @@
                         <button type="submit" class="btn btn-white">
                           <span class="text-light">
                             <i class="material-icons">arrow_right_alt</i>
-                          </span> <a href="?action=post&id=<?= $post->getId(); ?>">Consulter</a> </button>
+                          </span> <a href="?action=post&id=<?= $post->getId(); ?>" target="_blank">Consulter</a> </button>
                       </div>
                   	</div>                  
             		</div>
