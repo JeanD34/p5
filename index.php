@@ -1,5 +1,7 @@
 <?php
 
+setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
+
 require_once 'Config/Config.php';
 
 session_start();
@@ -9,7 +11,7 @@ spl_autoload_register('autoload');
 function autoload($class, $dir = null) {
     
     if (is_null($dir)) {
-        $dir = '../blog/';
+        $dir = "../". AUTOLOAD_PATH ."/";
     }
     
     foreach (scandir($dir) as $file) {
