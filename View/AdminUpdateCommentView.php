@@ -13,6 +13,7 @@
                   <div class="card-body">
                     <form class="add-new-post" method="post" action="index.php?action=editComment">
                 		<input type="hidden" name="id" value="<?= $comment->getId();?>">
+                    <div class="mb-3">Après mise à jour, votre commentaire sera re-soumis à validation.</div>
                 		<textarea class="form-control form-control-lg mb-3"  rows="10" name="content"><?= $comment->getContent(); ?></textarea>
                 		<button type="submit" class="btn btn-sm btn-accent ml-auto">
                           <i class="material-icons">file_copy</i>Modifier commentaire</button>
