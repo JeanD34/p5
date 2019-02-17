@@ -82,7 +82,7 @@ nav ul li a {
   transition: all 0.5s ease-in-out 0s;
 }
 
-.anchor{
+.anchor {
   display: block;
   height: 90px; /*same height as header*/
   margin-top: -90px; /*same height as header*/
@@ -93,11 +93,23 @@ p.login-comment {
   margin: 0;
 }
 
+body > div.paddsections.text-center {
+  padding-bottom: 45px !important;
+}
+
+body > div:nth-child(3) {
+  padding-bottom: 60px !important;
+}
+
+body > div:nth-child(4) {
+  padding-bottom: 60px !important;
+}
+
 p.error {
   margin: 0;
-  color: red;
+  color: black;
   display: inline-block;
-  border: 1px solid red;
+  border: 1px solid black;
   text-align: center;
   padding: 15px;
   font-weight: 600;
@@ -255,6 +267,11 @@ body > div.container.paddsections > div:nth-child(1) > img {
 
 .logo {
   float: left;
+}
+
+.error-img{
+  height: 22rem;
+  width: 20rem;
 }
 
 .logo img {
