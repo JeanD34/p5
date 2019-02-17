@@ -35,7 +35,8 @@
                     <?php if (!empty($comments)) : ?>
                     <?php foreach ($comments as $comment) : ?>
                     <ul class="entry-comments-list list-unstyled">
-                      <li id="<?= $comment->getId(); ?>">
+                      <span class="anchor" id="<?= $comment->getId(); ?>"></span>
+                      <li>
                         <div class="entry-comments-item">
                           <img src="Content/backend/images/avatars/<?= $comment->getAvatar(); ?>" class="entry-comments-avatar" alt="<?= $comment->getUsername(); ?>">
                           <div class="entry-comments-body">

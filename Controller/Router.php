@@ -76,6 +76,9 @@ class Router
                     case 'profile':
                         $this->userController->profile();
                         break;
+                    case 'userProfile':
+                        $this->userController->userProfile();
+                        break;
                     case 'logout':
                         $this->userController->logout();
                         break;
@@ -98,7 +101,8 @@ class Router
                         $this->postController->postForm();
                         break;
                     case 'updatePost':
-                        $this->postController->updatePostValidation();          
+                        $this->postController->updatePostValidation();
+                        break;          
                     case 'addPostView':
                         $this->postController->addView();
                         break;
