@@ -45,7 +45,7 @@ class UserController
         $user_id = $this->userManager->lastId();
         $token = $_REQUEST['confirmation_token'];
         $subject = 'Confirmation creation compte';
-        $content = "Pour confirmer votre compte veuillez cliquer sur ce lien http://localhost/blog/index.php?action=confirmUser&id=$user_id&token=$token";
+        $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
         mail($_REQUEST['email'], $subject, $content);
         $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer";
         $view = new View("Login");
