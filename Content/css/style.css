@@ -86,6 +86,17 @@ p.login-comment {
   margin: 0;
 }
 
+p.error {
+  margin: 0;
+  color: red;
+  display: inline-block;
+  border: 1px solid red;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+  margin: 15px;
+}
+
 p {
   margin: 25px 0;
   padding: 0;
@@ -224,6 +235,15 @@ nav ul li a {
   text-transform: uppercase;
   letter-spacing: 0.02em;
   text-transform: capitalize;
+}
+
+body > div.container.paddsections > div:nth-child(1) > img {
+  width: 12%;
+  height: 50%;
+}
+
+.login-logo {
+  padding-bottom: 8rem;
 }
 
 .logo {
