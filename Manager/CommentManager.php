@@ -5,7 +5,7 @@ class CommentManager extends AbstractManager
     public function findAll($postId)
     {
         $comments = [];
-        $sql = 'SELECT * FROM comment WHERE id_post_fk = ? AND validated = 1';
+        $sql = 'SELECT comment.id, content, add_date, id_user_fk, username, avatar FROM comment JOIN user ON comment.id_user_fk = user.id WHERE id_post_fk = ? AND validated = 1';
         $result = $this->queryExecute($sql, array($postId));
         if ($result->rowCount() >= 1) {        
             foreach ($result->fetchAll() as $row) {
@@ -21,7 +21,7 @@ class CommentManager extends AbstractManager
     public function findAllValidate() 
     {
         $comments = [];
-        $sql = 'SELECT * FROM comment WHERE validated = 1 ORDER BY id DESC';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 ORDER BY id DESC';
         $result = $this->queryExecute($sql);
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
@@ -37,7 +37,7 @@ class CommentManager extends AbstractManager
     public function findAllInvalidate()
     {
         $comments = [];
-        $sql = 'SELECT * FROM comment WHERE validated = 0 ORDER BY id DESC';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 0 ORDER BY id DESC';
         $result = $this->queryExecute($sql);
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
@@ -69,7 +69,7 @@ class CommentManager extends AbstractManager
     public function findAllUserComments($userId)
     {
         $userComments = [];
-        $sql = 'SELECT * FROM comment WHERE validated = 1 AND id_user_fk = ?';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 AND comment.id_user_fk = ?';
         $result = $this->queryExecute($sql, array($userId));
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
@@ -85,7 +85,7 @@ class CommentManager extends AbstractManager
     public function findLastThree() 
     {   
         $comments = [];
-        $sql = 'SELECT * FROM comment WHERE validated = 0 LIMIT 3';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 0 LIMIT 3';
         $result = $this->queryExecute($sql);
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
@@ -112,10 +112,17 @@ class CommentManager extends AbstractManager
         
         return $userComments;
     }
+
+    public function countPostComments($id) {
+        $sql = 'SELECT COUNT(*) FROM comment WHERE id_post_fk = ? AND validated = 1';
+        $result = $this->queryExecute($sql, array($id));
+        $count = $result->fetch();
+        return $count[0];
+    }
     
     public function add($comment) 
     {
-        $sql ='INSERT INTO comment (content, id_post_fk, id_user_fk) VALUES (?, ?, ?)';
+        $sql ='INSERT INTO comment (content, id_post_fk, add_date, id_user_fk) VALUES (?, ?, NOW(), ?)';
         $this->queryExecute($sql, array($comment->getContent(), $comment->getId_post_fk(), $comment->getId_user_fk()));
     }
     
