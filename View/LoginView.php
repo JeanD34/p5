@@ -7,7 +7,10 @@ if(isset($error)) {
     echo $error;
 }
 ?>
-    <div class="row">    	
+    <div class="row justify-content-center login-logo">
+        <img src="Content/images/login.png">
+    </div>
+    <div class="row">       	
         <div class="col-6">
         <h2>S'inscrire</h2>
             <form action="?action=addUser" method="post">
