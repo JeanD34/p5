@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Cette classe va contenir diverses fonctions utiles pour le debug.
  */
