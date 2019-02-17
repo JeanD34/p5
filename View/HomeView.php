@@ -122,7 +122,7 @@
                 <div class="card card-small card-post card-post--1">
                   <div class="card-post__image" style="background-image: url('Content/images/<?= $post->getImage(); ?>');">                  
                     <div class="card-post__author d-flex">
-                      <a href="action=userProfile&id=<?= $post->getId_user_fk(); ?>" target="_blank" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/<?= $post->getAvatar(); ?>');">Ecrit par <?= $post->getUsername(); ?></a>
+                      <a href="?action=userProfile&id=<?= $post->getId_user_fk(); ?>" target="_blank" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/<?= $post->getAvatar(); ?>');">Ecrit par <?= $post->getUsername(); ?></a>
                     </div>
                   </div>
                   <div class="card-body">

@@ -16,6 +16,9 @@ class UserController
     {
         $view = new View("Login");
         $view->generate(array());
+        $pageLogin = $_SERVER['REQUEST_URI'];
+        $activePageLogin = str_replace('/blog/index.php?action=', '', $pageLogin);
+        $_SESSION['URL'] = $activePageLogin;
     }
     
     public function login()
@@ -24,12 +27,19 @@ class UserController
         if(password_verify($_REQUEST['password'], $user['password'])) {
             $_SESSION['auth'] = $user;
             if ($user['role'] === 'user') {
-                $this->profile();
-            } else {
-                header("Location: ?action=admin");
-                exit();
+                if(stristr($_SESSION['URL'], 'userProfile') !== FALSE) {
+                    $this->userProfile();
+                } else {
+                    $this->profile();
+                }                
+            } elseif ($user['role'] === 'admin') {
+                if(stristr($_SESSION['URL'], 'userProfile')!== FALSE) {
+                    $this->userProfile(); 
+                } else {
+                    header("Location: ?action=admin");
+                    exit();
+                }
             }
-            
         } else {
             throw new Exception('Identifiants incorrects');
         }
@@ -74,6 +84,17 @@ class UserController
         $view->generate(array('user' => $user, 'userComments' => $userComments));
     }
 
+    public function userProfile()
+    {
+        if(!isset($_SESSION['auth'])) {
+            throw new LoginException('Veuillez vous inscrire ou vous connecter pour consulter le profil des utilisateurs');
+        } else {
+            $user = $this->userManager->find($_REQUEST['id']);
+            $view = new View("AdminUserProfile");
+            $view->generate(array('user' => $user));
+        }
+    }
+
     public function userComments()
     {
         $user = $this->userManager->find($_SESSION['auth']['id']);
@@ -100,9 +121,13 @@ class UserController
     }
     
     public function errorConnecting($error) 
-    {
+    {   
+        $pageLogin = $_SERVER['REQUEST_URI'];
+        $activePageLogin = str_replace('/blog/index.php?action=', '', $pageLogin);
+        $_SESSION['URL'] = $activePageLogin;
         $view = new View("Login");
         $view->generate(array('error' => $error));
+        
     }
     
     public function logout() 
