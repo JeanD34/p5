@@ -8,20 +8,20 @@
             <div class="container-main single-main">
               <div class="col-md-12">
                 <div class="block-main mb-30 card-post--1">
-                  <div class="card-post__image card-blog-single""><img class="card-img-top" src="Content/images/<?= $post->getImage(); ?>"">                  
+                  <div class="card-post__image card-blog-single"><img class="card-img-top" src="Content/images/<?= $post->getImage(); ?>">                  
                     <div class="card-post__author d-flex">
-                      <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/0.jpg');">Written by Anna Kunis</a>
+                      <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('Content/backend/images/avatars/<?= $user->getAvatar(); ?>');">Ecrit par <?= $user->getUsername(); ?></a>
                     </div>
                   </div>
                   <div class="content-main single-post padDiv">
                     <div class="journal-txt">
-                      <h4><a href="#"><?= $post->getTitle(); ?></a></h4>
+                      <h4 class="mb-4 mt-3"><?= $post->getTitle(); ?></h4>
                     </div>
                     <div class="post-meta">
                       <ul class="list-unstyled mb-0">
-                        <li class="author">par:<a href="#">Auteur</a></li>
-                        <li class="date">date: Date</li>
-                        <li class="commont"><i class="ion-ios-heart-outline"></i><a href="#">Nombre de commentaire</a></li>
+                        <li class="author">par:<a href="?action=userProfile&id=<?= $user->getId(); ?>" target="_blank"><?= $user->getUsername(); ?></a></li>
+                        <li class="date">date: <?= strftime('%d-%m-%Y', strtotime($post->getAdd_date())); ?></li>
+                        <li class="commont"><i class="ion-ios-heart-outline"></i><a href="#comment-block"><?= $nbComment; ?> commentaires</a></li>
                       </ul>
                     </div>
                     <p class="mb-30"><?= $post->getContent(); ?></p>
@@ -31,22 +31,23 @@
               <div class="col-md-12">
                 <div class="comments text-left padDiv mb-30">
                   <div class="entry-comments">
-                    <h6 id="comment-block" class="mb-30">Doit afficher le nombre de commentaire</h6>
+                    <h6 id="comment-block" class="mb-30"><?= $nbComment; ?> commentaires</h6>
                     <?php if (!empty($comments)) : ?>
                     <?php foreach ($comments as $comment) : ?>
                     <ul class="entry-comments-list list-unstyled">
-                      <li>
+                      <li id="<?= $comment->getId(); ?>">
                         <div class="entry-comments-item">
-                          <img src="Content/backend/images/avatars/0.jpg" class="entry-comments-avatar" alt="">
+                          <img src="Content/backend/images/avatars/<?= $comment->getAvatar(); ?>" class="entry-comments-avatar" alt="<?= $comment->getUsername(); ?>">
                           <div class="entry-comments-body">
-                            <span class="entry-comments-author"><a href="#">Auteur</a></span>
-                            <span>Date et heure</span>
+                            <span class="entry-comments-author"><a href="?action=userProfile&id=<?= $comment->getId_user_fk(); ?>" target="_blank"><?= $comment->getUsername(); ?></a></span>
+                            <span><?= strftime('%d-%m-%Y', strtotime($comment->getAdd_date())); ?> à <?= strftime('%H:%M', strtotime($comment->getAdd_date())); ?></span>
                             <p class="mb-10" id="<?= $comment->getId(); ?>"><?= $comment->getContent(); ?></p>
                           </div>
-                        </div>                       
+                        </div>
+                      </li>                       
                     </ul>
                     <?php endforeach; ?>
-        			<?php endif; ?>
+        			      <?php endif; ?>
                   </div>
                 </div>
               </div>
@@ -54,6 +55,7 @@
               <div class="col-lg-12">
                 <div class="cmt padDiv">
                 <div class="mb-4"><?= $_SESSION['auth']['username']?></div>
+                <div class="mb-4">Les commentaires sont soumis à validation et limités à 1000 caractères.</div>
                   <form id="comment-form" method="post" action="index.php?action=comment" role="form">
                   <input type="hidden" name="id_post_fk" value="<?= $post->getId(); ?>">
                     <div class="row">
