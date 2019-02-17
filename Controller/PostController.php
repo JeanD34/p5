@@ -4,19 +4,23 @@ class PostController {
     
     private $postManager;
     private $commentManager;
+    private $userManager;
     
     public function __construct() 
     {
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
+        $this->userManager = new UserManager();
     }
     
     public function post() 
     {
         $post = $this->postManager->find($_REQUEST['id']);
+        $nbComment = $this->commentManager->countPostComments($_REQUEST['id']);
+        $user = $this->userManager->find($post->getId_user_fk());
         $comments = $this->commentManager->findAll($_REQUEST['id']);
         $view = new View("Post");
-        $view->generate(array('post' => $post, 'comments' => $comments));
+        $view->generate(array('post' => $post, 'user' => $user, 'nbComment' => $nbComment, 'comments' => $comments));
     }
     
     public function posts()
@@ -73,6 +77,7 @@ class PostController {
         } else {
             $_REQUEST['image'] = 'default.jpg';
         }
+        $_REQUEST['id_user_fk'] = $_SESSION['auth']['id'];
         $post->hydrate($_REQUEST);
         $this->postManager->add($post);
         header("location: ?action=adminPosts");
