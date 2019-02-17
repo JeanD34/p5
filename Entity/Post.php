@@ -8,6 +8,10 @@ class Post
     private $image;
     private $lead;
     private $content;
+    private $add_date;
+    private $id_user_fk;
+    private $username;
+    private $avatar;
     
     // Setters //
     
@@ -35,6 +39,26 @@ class Post
     {
         $this->content = $content;
     }
+
+    public function setAdd_date($add_date) 
+    {
+        $this->add_date = $add_date;
+    }
+
+    public function setId_user_fk($id_user_fk)
+    {
+        $this->id_user_fk = $id_user_fk;
+    }
+
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
            
     // Getters //
     
@@ -61,5 +85,25 @@ class Post
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function getAdd_date() {
+        
+        return $this->add_date;
+    }
+
+    public function getId_user_fk()
+    {
+        return $this->id_user_fk;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
     }
 }
