@@ -35,7 +35,7 @@
 
             <p class="p-heading">Actuellement en formation <a href="symfony.pdf" target="_blank">"Développeur d'application - PHP / Symfony"</a> au sein de l'école en ligne <a href="https://openclassrooms.com/" target="_blank">OpenClassrooms</a>. Cette formation me permettra de maitriser le framework Symfony et d'obtenir un titre de <a href="http://www.rncp.cncp.gouv.fr/grand-public/visualisationFiche?format=fr&fiche=27099" target="_blank">"Développeur d'application"</a> de niveau II, équivalent à un bac +3/4. </p>
             <p class="separator">J'ai également obtenu un titre de <a href="http://www.rncp.cncp.gouv.fr/grand-public/visualisationFiche?format=fr&fiche=5927" target="_blank">"Développeur Logiciel"</a> de niveau III (équivalent Bac+2) en 2017, à l'institut de formation <a href="http://www.objectif3w.com/" target="_blank">Objectif3W</a> en suivant leur cursus <a href="webdev.pdf" target="_blank">"WEBDEV"</a>.</p>
-
+            <a href="Content/CV.pdf" target="_blank"><button class="btn resumee mt-4 mb-3 mr-3">Consulter mon CV</button></a><a href="Content/CV.pdf" download><button class="btn resumee mt-4 mb-3">Télécharger mon CV</button></a>
           </div>
 
         </div>
