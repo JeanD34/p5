@@ -10,6 +10,7 @@ class User
     private $website;
     private $avatar;
     private $description;
+    private $inscription_date;
     private $confirmation_token;
     
     // Setters
@@ -47,6 +48,11 @@ class User
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    public function setInscription_date($inscription_date)
+    {
+        $this->inscription_date = $inscription_date;
     }
     
     public function setConfirmation_token($confirmation_token)
@@ -89,6 +95,11 @@ class User
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getInscription_date()
+    {
+        return $this->inscription_date;
     }
     
     public function getConfirmation_token()
