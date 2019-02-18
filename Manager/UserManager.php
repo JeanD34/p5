@@ -2,8 +2,37 @@
 
 class UserManager extends AbstractManager
 {
+    public function findAllActivated()
+    {
+        $users = [];
+        $sql = 'SELECT * FROM user WHERE activated = 1';
+        $result = $this->queryExecute($sql, array());
+        foreach ($result->fetchAll() as $row) {
+            $user = new User();
+            $user->hydrate($row);
+            $users[] = $user;
+        }
+  
+        return $users;
+    }
+
+    public function findAllInactive()
+    {
+        $users = [];
+        $sql = 'SELECT * FROM user WHERE activated = 0';
+        $result = $this->queryExecute($sql, array());
+        foreach ($result->fetchAll() as $row) {
+            $user = new User();
+            $user->hydrate($row);
+            $users[] = $user;
+        }
+  
+        return $users;
+    }
+
+
     public function add($user) {
-        $sql = 'INSERT INTO user (username, email, password, confirmation_token) VALUES (?,?,?,?)';
+        $sql = 'INSERT INTO user (username, email, password, confirmation_token, inscription_date) VALUES (?,?,?,?, NOW())';
         $this->queryExecute($sql, array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getConfirmation_token()));
     }
     
@@ -53,5 +82,10 @@ class UserManager extends AbstractManager
     {
         $sql = 'UPDATE user SET username = ?, email = ?, password = ?, website = ?, avatar = ?, description = ? WHERE id = ?';
         $this->queryExecute($sql, array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getWebsite(), $user->getAvatar(), $user->getDescription(), $user->getId(),));
+    }
+
+    public function delete($id) {
+        $sql = 'DELETE FROM user WHERE id = ?';
+        $this->queryExecute($sql, array($id));
     }
 }
