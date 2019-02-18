@@ -203,7 +203,8 @@ pre {
   background-color: transparent; }
   .table th,
   .table td {
-    padding: 0.75rem; }
+    padding: 0.75rem;
+    vertical-align: middle; }
   .table .table {
     background-color: #fff; }
 
@@ -4374,6 +4375,7 @@ a.text-accent:hover, a.text-accent:focus {
       display: block !important;
       height: auto; }
       .main-footer .nav {
+      	text-align: center;
         width: 100%;
         display: block;
         border-bottom: 1px solid #e1e5eb;

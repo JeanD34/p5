@@ -19,8 +19,8 @@ class Router
     {
         try {
             if (isset($_REQUEST['action'])) {
-                $loggedAction = array('comment','validateComment', 'editCommentView', 'editComment', 'deleteComment', 'adminComments', 'profile', 'logout', 'admin', 'adminPosts', 'deletePost', 'updateView', 'updatePost', 'addPostView', 'addPost');
-                $loggedAdminAction = array('validateComment', 'adminComments', 'admin', 'adminPosts', 'deletePost','updateView', 'updatePost', 'addPostView', 'addPost');
+                $loggedAction = array('comment','validateComment', 'editCommentView', 'editComment', 'deleteComment', 'adminComments', 'profile', 'userTable', 'deleteUser', 'logout', 'admin', 'adminPosts', 'deletePost', 'updateView', 'updatePost', 'addPostView', 'addPost');
+                $loggedAdminAction = array('validateComment', 'adminComments', 'admin', 'adminPosts', 'deletePost','updateView', 'updatePost', 'addPostView', 'addPost', 'userTable', 'deleteUser');
                 if (in_array($_REQUEST['action'], $loggedAction)) {
                     if (!Validator::validateUser()) {
                         throw new LoginException('Veuillez vous connecter pour effectuer cette action');
@@ -79,6 +79,12 @@ class Router
                     case 'userProfile':
                         $this->userController->userProfile();
                         break;
+                    case 'userTable':
+                        $this->userController->userTable();
+                        break;
+                    case 'deleteUser':
+                        $this->userController->deleteUser();
+                        break;
                     case 'logout':
                         $this->userController->logout();
                         break;
@@ -117,8 +123,7 @@ class Router
                 $this->homeController->home();
             }
         } catch (LoginException $e) {
-            $this->userController->errorConnecting($e->getMessage());
-
+            $this->userController->errorConnecting($e->getMessage());            
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }    

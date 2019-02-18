@@ -62,6 +62,13 @@ class UserController
         $view->generate(array('validMsg' => $validMsg));
 
     }
+
+    public function deleteUser() 
+    {
+        $this->userManager->delete($_REQUEST['id']);
+        header("Location: ?action=userTable");
+        exit();
+    }
     
     public function confirmationUser()
     {
@@ -101,6 +108,14 @@ class UserController
         $userComments = $this->commentManager->findAllUserComments($user->getId());
         $view = new View("AdminUserComments");
         $view->generate(array('user' => $user, 'userComments' => $userComments));
+    }
+
+    public function userTable() 
+    {
+        $activatedUsers = $this->userManager->findAllActivated();
+        $inactiveUsers = $this->userManager->findAllInactive();
+        $view = new View('AdminUserTable');
+        $view->generate(array('activatedUsers' => $activatedUsers, 'inactiveUsers' => $inactiveUsers));
     }
 
     public function updateAccount()
