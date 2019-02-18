@@ -58,9 +58,9 @@ $activePage = str_replace('/blog/index.php?action=', '', $page);
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'users') { echo 'active'; } ?>" href="tables.html">
+                <a class="nav-link <?php if ($activePage === 'userTable') { echo 'active'; } ?>" href="?action=userTable">
                   <i class="material-icons">table_chart</i>
-                  <span>Utilisateurs</span>
+                  <span>Tous les utilisateurs</span>
                 </a>
               </li>
         		<?php if (stristr($activePage, 'updateView')) : ?>
