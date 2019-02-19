@@ -35,7 +35,7 @@ if(isset($error)) {
         <div class="col-6">
         <h2>Se connecter</h2>
             <form action="?action=login" method="post">
-            <input type="hidden" name="id" value="<?php if(isset($_REQUEST['id'])) { echo $$_REQUEST['id'] ;} ?>">
+            <input type="hidden" name="id" value="<?php if(isset($_REQUEST['id'])) { echo $_REQUEST['id'] ;} ?>">
               <div class="form-group">
                 <label for="current-username">Pseudo</label>
                 <input type="text" class="form-control" id="current-username" name="username" autocomplete="username" placeholder="Pseudo">   

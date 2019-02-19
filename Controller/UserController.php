@@ -15,10 +15,8 @@ class UserController
     public function loginView() 
     {
         $view = new View("Login");
-        $view->generate(array());
-        $pageLogin = $_SERVER['REQUEST_URI'];
-        $activePageLogin = str_replace('/blog/index.php?action=', '', $pageLogin);
-        $_SESSION['URL'] = $activePageLogin;
+        $view->generate(array());        
+        $_SESSION['action'] = $_REQUEST['action'];
     }
     
     public function login()
@@ -27,13 +25,13 @@ class UserController
         if(password_verify($_REQUEST['password'], $user['password'])) {
             $_SESSION['auth'] = $user;
             if ($user['role'] === 'user') {
-                if(stristr($_SESSION['URL'], 'userProfile') !== FALSE) {
+                if($_SESSION['action'] === 'userProfile') {
                     $this->userProfile();
                 } else {
                     $this->profile();
                 }                
             } elseif ($user['role'] === 'admin') {
-                if(stristr($_SESSION['URL'], 'userProfile')!== FALSE) {
+                if($_SESSION['action'] === 'userProfile') {
                     $this->userProfile(); 
                 } else {
                     header("Location: ?action=admin");
@@ -105,17 +103,31 @@ class UserController
     public function userComments()
     {
         $user = $this->userManager->find($_SESSION['auth']['id']);
-        $userComments = $this->commentManager->findAllUserComments($user->getId());
+        $pageCV = (!empty($_GET['pageCV']) ? $_GET['pageCV'] : 1);
+        $limit = 15;
+        $offsetCV = ($pageCV - 1) * $limit;
+        $totalCV = $this->commentManager->commentUserNumber($user->getId());
+        $totalPagesCV = ceil($totalCV/$limit);   
+        $userComments = $this->commentManager->findAllUserComments($user->getId(), $limit, $offsetCV);
         $view = new View("AdminUserComments");
-        $view->generate(array('user' => $user, 'userComments' => $userComments));
+        $view->generate(array('user' => $user, 'userComments' => $userComments, 'pageCV' => $pageCV, 'totalPagesCV' => $totalPagesCV));
     }
 
     public function userTable() 
-    {
-        $activatedUsers = $this->userManager->findAllActivated();
-        $inactiveUsers = $this->userManager->findAllInactive();
+    {   
+        $pageUV = (!empty($_GET['pageUV']) ? $_GET['pageUV'] : 1);
+        $pageUINV = (!empty($_GET['pageUINV']) ? $_GET['pageUINV'] : 1);
+        $limit = 4;
+        $offsetUV = ($pageUV - 1) * $limit;
+        $offsetUINV = ($pageUINV - 1) * $limit;       
+        $totalUV = $this->userManager->userNumber('1');
+        $totalUINV = $this->userManager->userNumber('0');
+        $totalPagesUV = ceil($totalUV/$limit);
+        $totalPagesUINV = ceil($totalUINV/$limit);
+        $activatedUsers = $this->userManager->findAllActivated($limit, $offsetUV);
+        $inactiveUsers = $this->userManager->findAllInactive($limit, $offsetUINV);
         $view = new View('AdminUserTable');
-        $view->generate(array('activatedUsers' => $activatedUsers, 'inactiveUsers' => $inactiveUsers));
+        $view->generate(array('activatedUsers' => $activatedUsers, 'inactiveUsers' => $inactiveUsers, 'pageUV' => $pageUV, 'pageUINV' => $pageUINV, 'totalPagesUV' => $totalPagesUV, 'totalPagesUINV' => $totalPagesUINV));
     }
 
     public function updateAccount()
@@ -137,9 +149,7 @@ class UserController
     
     public function errorConnecting($error) 
     {   
-        $pageLogin = $_SERVER['REQUEST_URI'];
-        $activePageLogin = str_replace('/blog/index.php?action=', '', $pageLogin);
-        $_SESSION['URL'] = $activePageLogin;
+        $_SESSION['action'] = $_REQUEST['action'];
         $view = new View("Login");
         $view->generate(array('error' => $error));
         

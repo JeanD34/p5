@@ -87,9 +87,18 @@ class CommentController {
     
     public function adminComments()
     {
-        $invalidateComments = $this->commentManager->findAllInvalidate();
-        $validateComments = $this->commentManager->findAllValidate();
+        $pageCV = (!empty($_GET['pageCV']) ? $_GET['pageCV'] : 1);
+        $pageCINV = (!empty($_GET['pageCINV']) ? $_GET['pageCINV'] : 1);
+        $limit = 9;
+        $offsetCV = ($pageCV - 1) * $limit;
+        $offsetCINV = ($pageCINV - 1) * $limit;     
+        $totalCV = $this->commentManager->commentNumber('1');
+        $totalCINV = $this->commentManager->commentNumber('0');
+        $totalPagesCV = ceil($totalCV/$limit);
+        $totalPagesCINV = ceil($totalCINV/$limit);
+        $validateComments = $this->commentManager->findAllValidate($limit, $offsetCV);
+        $invalidateComments = $this->commentManager->findAllInvalidate($limit, $offsetCINV);   
         $view = new View('AdminComments');
-        $view->generate(array('invalidateComments' => $invalidateComments, 'validateComments' => $validateComments));
+        $view->generate(array('invalidateComments' => $invalidateComments, 'validateComments' => $validateComments, 'pageCV' => $pageCV, 'pageCINV' => $pageCINV, 'totalPagesCV' => $totalPagesCV, 'totalPagesCINV' => $totalPagesCINV));
     }
 }

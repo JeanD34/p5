@@ -22,7 +22,7 @@
                     $dayCommentInv = $dateCommentInv->diff($now)->format("%d");
                     ?>
                         <?php if ($i % 3 == 0) : ?>
-                        	<div class="col-lg-4 col-md-6 col-sm-12 mb-md-4">
+                        	<div class="col-lg-4 col-md-6 col-sm-12">
                         <?php endif; ?>                
                     	<?php $i++; ?>                  
                     	<div class="blog-comments__item d-flex p-3">
@@ -59,6 +59,18 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                     </div>
+                    <div class="text-center mb-3 mt-3 paging">
+            <?php if ($pageCINV > 1) : ?>
+        <a href="?action=adminComments&pageCINV=1"><< </a> - <a href="?action=adminComments&pageCINV=<?= $pageCINV - 1; ?>">Page précédente </a> -
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $totalPagesCINV; $i++): ?>
+        <a href="?action=adminComments&pageCINV=<?php echo $i; ?>"><?= $i; ?></a> 
+        <?php endfor;?>   	
+        <?php if ($pageCINV < $totalPagesCINV) : ?>
+		- <a href="?action=adminComments&pageCINV=<?= $pageCINV + 1; ?>">Page suivante</a>
+    - <a href="?action=adminComments&pageCINV=<?= $totalPagesCINV ?>"> >></a>
+		<?php endif; ?>
+            </div>
                 </div>
             </div>
         </div>
@@ -66,7 +78,7 @@
     
     <!-- End -->
     <!-- Validate Comments -->
-    <div class="col mb-4">
+    <div id="commentVal" class="col mb-4">
         <div class="card card-small blog-comments">
             <div class="card-header border-bottom">
             	<h6 class="m-0">Commentaires publiés</h6>
@@ -82,7 +94,7 @@
                     $dayCommentVal = $dateCommentVal->diff($now)->format("%d");
                     ?>
                         <?php if ($i % 3 == 0) : ?>
-                    		<div class="col-lg-4 col-md-6 col-sm-12 mb-md-4">
+                    		<div class="col-lg-4 col-md-6 col-sm-12">
                         <?php endif; ?>                
                     	<?php $i++; ?>
                         <div class="blog-comments__item d-flex p-3">
@@ -116,6 +128,18 @@
                     <?php endforeach; ?>
     				
             	</div>
+                <div class="text-center mb-3 mt-3 paging">
+            <?php if ($pageCV > 1) : ?>
+        <a href="?action=adminComments&pageCV=1#commentVal"><< </a> - <a href="?action=adminComments&pageCV=<?= $pageCV - 1; ?>#commentVal">Page précédente </a> -
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $totalPagesCV; $i++): ?>
+        <a href="?action=adminComments&pageCV=<?php echo $i; ?>#commentVal"><?= $i; ?></a> 
+        <?php endfor;?>   	
+        <?php if ($pageCV < $totalPagesCV) : ?>
+		- <a href="?action=adminComments&pageCV=<?= $pageCV + 1; ?>#commentVal">Page suivante</a>
+    - <a href="?action=adminComments&pageCV=<?= $totalPagesCV ?>#commentVal"> >></a>
+		<?php endif; ?>
+            </div>
             </div>
         </div>
     </div>

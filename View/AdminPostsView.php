@@ -44,16 +44,17 @@
               </div>
               <?php endforeach; ?>
             </div>
-            <div>
-            	<?php if ($page > 1) : ?>
-                <a href="?action=adminPosts&page=<?= $page - 1; ?>">Page précédente -</a>
-                <?php endif; ?>
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="?action=adminPosts&page=<?php echo $i; ?>"><?php echo $i; ?></a> 
-                <?php endfor;?>   	
-                <?php if ($page < $totalPages) : ?>
-        		— <a href="?action=adminPosts&page=<?php echo $page + 1; ?>">Page suivante</a>
-        		<?php endif; ?>
+            <div class="text-center mt-3 mb-5 paging">
+            <?php if ($page > 1) : ?>
+        <a href="?action=posts&page=1"><< </a> - <a href="?action=posts&page=<?= $page - 1; ?>">Page précédente </a> -
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <a href="?action=posts&page=<?php echo $i; ?>"><?= $i; ?></a> 
+        <?php endfor;?>   	
+        <?php if ($page < $totalPages) : ?>
+		- <a href="?action=posts&page=<?= $page + 1; ?>">Page suivante</a>
+    - <a href="?action=posts&page=<?= $totalPages ?>"> >></a>
+		<?php endif; ?>
             </div>
           </div>  
 			<?php include_once 'ModalPostView.php';?>

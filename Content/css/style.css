@@ -465,6 +465,11 @@ img {
 /*  Journal
 /*-----------------------------------------------------------------------------------*/
 
+.paging {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
 .card {
   background-color: #fff;
   border: none;

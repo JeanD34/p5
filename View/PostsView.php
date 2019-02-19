@@ -30,15 +30,18 @@
               </div>
           <?php endforeach; ?>         	
         </div>
+        <div class="text-center mt-5 paging">
         <?php if ($page > 1) : ?>
-        <a href="?action=posts&page=<?= $page - 1; ?>">Page précédente -</a>
+        <a href="?action=posts&page=1"><< </a> - <a href="?action=posts&page=<?= $page - 1; ?>">Page précédente </a> -
         <?php endif; ?>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
         <a href="?action=posts&page=<?php echo $i; ?>"><?= $i; ?></a> 
         <?php endfor;?>   	
         <?php if ($page < $totalPages) : ?>
-		— <a href="?action=posts&page=<?= $page + 1; ?>">Page suivante</a>
+		- <a href="?action=posts&page=<?= $page + 1; ?>">Page suivante</a>
+    - <a href="?action=posts&page=<?= $totalPages ?>"> >></a>
 		<?php endif; ?>
+    </div>
       </div>
     </div>
   </div>
