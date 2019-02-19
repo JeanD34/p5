@@ -18,11 +18,11 @@ class CommentManager extends AbstractManager
         return $comments;
     }
     
-    public function findAllValidate() 
+    public function findAllValidate($limit, $offset) 
     {
         $comments = [];
-        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 ORDER BY id DESC';
-        $result = $this->queryExecute($sql);
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 ORDER BY id DESC LIMIT :limit OFFSET :offset';
+        $result = $this->queryExecuteInt($sql, array('limit' => $limit, 'offset' => $offset));
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
                 $comment = new Comment();
@@ -34,11 +34,11 @@ class CommentManager extends AbstractManager
         return $comments;
     }
     
-    public function findAllInvalidate()
+    public function findAllInvalidate($limit, $offset)
     {
         $comments = [];
-        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 0 ORDER BY id DESC';
-        $result = $this->queryExecute($sql);
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 0 ORDER BY id DESC LIMIT :limit OFFSET :offset';
+        $result = $this->queryExecuteInt($sql, array('limit' => $limit, 'offset' => $offset));
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
                 $comment = new Comment();
@@ -48,6 +48,22 @@ class CommentManager extends AbstractManager
         }
         
         return $comments;
+    }
+
+    public function commentNumber($valid)
+    {
+        $sql = 'SELECT COUNT(*) FROM comment WHERE validated = ?';
+        $result = $this->queryExecute($sql, array($valid));
+        $count = $result->fetch();
+        return $count[0];
+    }
+
+    public function commentUserNumber($id)
+    {
+        $sql = 'SELECT COUNT(*) FROM comment WHERE validated = 1 AND id = ?';
+        $result = $this->queryExecute($sql, array($id));
+        $count = $result->fetch();
+        return $count[0];
     }
     
     public function find($commentId)

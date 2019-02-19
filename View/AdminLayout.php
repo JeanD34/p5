@@ -1,8 +1,5 @@
 <?php 
 setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
-$page = $_SERVER['REQUEST_URI'];
-$activePage = str_replace('/blog/index.php?action=', '', $page);
-
 ?>
 <!doctype html>
 <html class="no-js h-100" lang="fr">
@@ -40,30 +37,30 @@ $activePage = str_replace('/blog/index.php?action=', '', $page);
             <ul class="nav flex-column">
             <?php if($_SESSION['auth']['role'] === 'admin') : ?>
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'admin') { echo 'active'; } ?>" href="index.php?action=admin">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'admin') { echo 'active'; } ?>" href="index.php?action=admin">
                   <i class="material-icons">pan_tool</i>
                   <span>Panneau d'administration</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'adminPosts') { echo 'active'; } ?>" href="?action=adminPosts">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'adminPosts') { echo 'active'; } ?>" href="?action=adminPosts">
                   <i class="material-icons">vertical_split</i>
                   <span>Tous les articles</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'addPostView') { echo 'active'; } ?>" href="?action=addPostView">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'addPostView') { echo 'active'; } ?>" href="?action=addPostView">
                   <i class="material-icons">note_add</i>
                   <span>Ajouter un article</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'userTable') { echo 'active'; } ?>" href="?action=userTable">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'userTable') { echo 'active'; } ?>" href="?action=userTable">
                   <i class="material-icons">table_chart</i>
                   <span>Tous les utilisateurs</span>
                 </a>
               </li>
-        		<?php if (stristr($activePage, 'updateView')) : ?>
+        		<?php if ($_REQUEST['action'] === 'updateView') : ?>
                <li class="nav-item">
                 <a class="nav-link active" href="">
                   <i class="material-icons">note</i>
@@ -72,19 +69,19 @@ $activePage = str_replace('/blog/index.php?action=', '', $page);
               </li>
               <?php endif; ?> 
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'adminComments') { echo 'active'; } ?>" href="?action=adminComments">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'adminComments') { echo 'active'; } ?>" href="?action=adminComments">
                   <i class="material-icons">insert_comment</i>
                   <span>Tous les commentaires</span>
                 </a>
               </li>
               <?php endif; ?>
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'userComments') { echo 'active'; } ?>" href="?action=userComments">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'userComments') { echo 'active'; } ?>" href="?action=userComments">
                   <i class="material-icons">insert_comment</i>
                   <span>Vos commentaires</span>
                 </a>
               </li>
-               <?php if (stristr($activePage, 'editCommentView')) : ?>
+               <?php if ($_REQUEST['action'] === 'editCommentView') : ?>
                <li class="nav-item">
                 <a class="nav-link active" href="">
                   <i class="material-icons">mode_comment</i>
@@ -93,7 +90,7 @@ $activePage = str_replace('/blog/index.php?action=', '', $page);
               </li>
               <?php endif; ?>               
               <li class="nav-item">
-                <a class="nav-link <?php if ($activePage === 'profile') { echo 'active'; } ?>" href="?action=profile">
+                <a class="nav-link <?php if ($_REQUEST['action'] === 'profile') { echo 'active'; } ?>" href="?action=profile">
                   <i class="material-icons">person</i>
                   <span>Profil</span>
                 </a>

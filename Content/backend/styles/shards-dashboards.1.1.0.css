@@ -131,6 +131,13 @@ h6, .h6 {
 body > main > div.main-content-container.container-fluid.px-4 > div:nth-child(2) > div > div > div > form > p {
   margin-bottom: 0.3rem; }
 
+.paging {
+  font-weight: bold;
+  font-size: 1.5rem; } 
+
+  .paging-user {
+  	font-size: 1.2rem; }
+
 p {
   margin-bottom: 1.75rem; }
 

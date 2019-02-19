@@ -2,11 +2,11 @@
 
 class UserManager extends AbstractManager
 {
-    public function findAllActivated()
+    public function findAllActivated($limit, $offset)
     {
         $users = [];
-        $sql = 'SELECT * FROM user WHERE activated = 1';
-        $result = $this->queryExecute($sql, array());
+        $sql = 'SELECT * FROM user WHERE activated = 1 ORDER BY id DESC LIMIT :limit OFFSET :offset';
+        $result = $this->queryExecuteInt($sql, array('limit' => $limit, 'offset' => $offset));
         foreach ($result->fetchAll() as $row) {
             $user = new User();
             $user->hydrate($row);
@@ -16,11 +16,11 @@ class UserManager extends AbstractManager
         return $users;
     }
 
-    public function findAllInactive()
+    public function findAllInactive($limit, $offset)
     {
         $users = [];
-        $sql = 'SELECT * FROM user WHERE activated = 0';
-        $result = $this->queryExecute($sql, array());
+        $sql = 'SELECT * FROM user WHERE activated = 0 ORDER BY id DESC LIMIT :limit OFFSET :offset';
+        $result = $this->queryExecuteInt($sql, array('limit' => $limit, 'offset' => $offset));
         foreach ($result->fetchAll() as $row) {
             $user = new User();
             $user->hydrate($row);
@@ -28,6 +28,14 @@ class UserManager extends AbstractManager
         }
   
         return $users;
+    }
+
+    public function userNumber($valid)
+    {
+        $sql = 'SELECT COUNT(*) FROM comment WHERE validated = ?';
+        $result = $this->queryExecute($sql, array($valid));
+        $count = $result->fetch();
+        return $count[0];
     }
 
 

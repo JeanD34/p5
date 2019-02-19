@@ -22,7 +22,9 @@ abstract class AbstractManager
         } 
         return $result;
     }
-    
+
+    // execute() take parameters as PARAM_STR, that doesn't work with OFFSET and LIMIT, so bindValue() with PARAM_INT.
+
     protected function queryExecuteInt($sql, $params) 
     {
         $result = $this->getBdd()->prepare($sql);
