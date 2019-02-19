@@ -2172,13 +2172,6 @@ i.material-icons {
     .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
       color: white; }
 
-body > main > div.col.mb-4 > div {
-  min-height: 400px;
-}
-body > main > div.main-content-container.container-fluid.px-4 > div.col.mb-4 > div {
-  min-height: 400px;
-}
-
 .card {
   background-color: #fff;
   border: none;

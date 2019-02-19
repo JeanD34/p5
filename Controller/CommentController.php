@@ -16,6 +16,12 @@ class CommentController {
         $comment->hydrate($_REQUEST);
         $postId = $comment->getId_post_fk();
         $this->commentManager->add($comment);
+        $headers = 'From: "Blog - Nouveau Commentaire"<webdev@jeandescorps.fr>'."\n";  
+        $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+        $headers .= 'Content-Transfer-Encoding: 8bit';
+        $subject = 'Nouveau commentaire sur votre blog';
+        $message = $_SESSION['auth']['username'] . ' à ajouté un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+        mail('jean.wevdev@gmail.com', $subject, $message, $headers);
         //$this->post($postId);
         header("location: ?action=post&id=$postId#comment-block");
         exit();
@@ -52,9 +58,15 @@ class CommentController {
         if($_SESSION['auth']['role'] !== 'admin') {
             if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
                 throw new Exception('Vous essayez de modifier un article dont vous n\'êtes pas l\'auteur !');
-            } else {
+            } else {               
                 $comment->hydrate($_REQUEST);
                 $this->commentManager->userUpdate($comment);
+                $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
+                $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                $headers .= 'Content-Transfer-Encoding: 8bit';
+                $subject = 'Un commentaire a été modifié sur votre blog';
+                $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+                mail('jean.wevdev@gmail.com', $subject, $message, $headers);
                 header("Location: ?action=profile");
                 exit();
             }

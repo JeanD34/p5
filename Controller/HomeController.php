@@ -20,7 +20,7 @@ class HomeController
     {
         if (!empty($_REQUEST['name']) && !empty($_REQUEST['email']) && !empty($_REQUEST['subject']) && !empty($_REQUEST['message'])) {
             
-            $headers = 'From: "Jean Descorps - Blog - ' . $_REQUEST['name'] .'"<webdev@jeandescorps.fr>'."\n"; 
+            $headers = 'From: "Message - Blog - ' . $_REQUEST['name'] .'"<webdev@jeandescorps.fr>'."\n"; 
             $headers .= 'Reply-To: ' . $_REQUEST['email'] . "\n"; 
             $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
             $headers .= 'Content-Transfer-Encoding: 8bit';
