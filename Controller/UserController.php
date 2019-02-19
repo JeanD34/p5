@@ -54,7 +54,11 @@ class UserController
         $token = $_REQUEST['confirmation_token'];
         $subject = 'Confirmation creation compte';
         $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
-        mail($_REQUEST['email'], $subject, $content);
+        $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
+        $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
+        $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+        $headers .= 'Content-Transfer-Encoding: 8bit';
+        mail($_REQUEST['email'], $subject, $content, $headers);
         $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer";
         $view = new View("Login");
         $view->generate(array('validMsg' => $validMsg));

@@ -42,9 +42,11 @@ class Router
                     case 'posts':
                         $this->postController->posts();
                         break;
-                    case 'comment':
-                        //Validator::validateComment($_REQUEST);                       
+                    case 'comment':                      
                         $this->commentController->comment();
+                        break;
+                    case 'contactMail':                      
+                        $this->homeController->contactMail();
                         break;
                     case 'validateComment':
                         $this->commentController->validateComment();
@@ -122,6 +124,8 @@ class Router
             } else {
                 $this->homeController->home();
             }
+        } catch (MailException $e) {
+            $this->homeController->errorMail($e->getMessage());
         } catch (LoginException $e) {
             $this->userController->errorConnecting($e->getMessage());            
         } catch (Exception $e) {

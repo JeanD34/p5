@@ -168,47 +168,40 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
-            <form action="" method="post" role="form" class="contactForm">
+          <div id="contactForm" class="col-lg-6">
+            <form action="?action=contactMail" method="post" role="form" class="contactForm">
               <div class="row">
-
-                <div id="sendmessage">Your message has been sent. Thank you!</div>
-                <div id="errormessage"></div>
-
                 <div class="col-lg-6">
                   <div class="form-group contact-block1">
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Votre Prénom"/>
-                    <div class="validation"></div>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Votre Prénom" required/>
                   </div>
                 </div>
-
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email"/>
-                    <div class="validation"></div>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email" required/>
                   </div>
                 </div>
-
                 <div class="col-lg-12">
                   <div class="form-group">
-                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet"/>
-                    <div class="validation"></div>
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet" required/>
                   </div>
                 </div>
-
                 <div class="col-lg-12">
                   <div class="form-group">
-                    <textarea class="form-control" name="message" id="message" rows="12" placeholder="Message"></textarea>
-                    <div class="validation"></div>
+                    <textarea class="form-control" name="message" id="message" rows="12" placeholder="Message" required></textarea>
                   </div>
                 </div>
-
                 <div class="col-lg-12">
                   <input type="submit" class="btn" value="Envoyer le message">
-                </div>
-
+                </div>               
               </div>
             </form>
+            <?php if(isset($_SESSION['validMail'])) : ?>
+            <p class="send"><?= $_SESSION['validMail'] ?></p>
+            <?php endif; ?>
+            <?php if(isset($error)) : ?>
+            <p class="errormessage"><?= $error ?></p>
+            <?php endif; ?>
           </div>
         </div>
       </div>

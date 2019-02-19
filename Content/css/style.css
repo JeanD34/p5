@@ -677,17 +677,16 @@ body > div.text-left.paddsection > div:nth-child(3) > div {
 }
 
 
-#contact  #sendmessage {
+p.send {
   color: #18d26e;
   border: 1px solid #18d26e;
-  display: none;
   text-align: center;
   padding: 15px;
   font-weight: 600;
   margin: 15px;
 }
 
-#contact  #errormessage {
+p.errormessage {
   color: red;
   display: none;
   border: 1px solid red;
