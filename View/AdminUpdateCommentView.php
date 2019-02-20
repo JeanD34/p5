@@ -13,8 +13,11 @@
                   <div class="card-body">
                     <form class="add-new-post" method="post" action="index.php?action=editComment">
                 		<input type="hidden" name="id" value="<?= $comment->getId();?>">
-                    <div class="mb-3">Après mise à jour, votre commentaire sera re-soumis à validation.</div>
-                		<textarea class="form-control form-control-lg mb-3"  rows="10" name="content"><?= $comment->getContent(); ?></textarea>
+                    <div class="mb-3">Après mise à jour, votre commentaire sera soumis à validation.</div>
+                    <?php if(isset($message)) : ?>
+                    <p class="alert alert-danger"><?= $message; ?></p>
+                    <?php endif; ?>
+                		<textarea class="form-control form-control-lg mb-3"  rows="10" name="content" required><?= $comment->getContent(); ?></textarea>
                 		<button type="submit" class="btn btn-sm btn-accent ml-auto">
                           <i class="material-icons">file_copy</i>Modifier commentaire</button>
                     </form>
@@ -22,6 +25,5 @@
                 </div>                
               </div>
               </div>
-				<!-- / Add New Post Form -->
 
 </div>

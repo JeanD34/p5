@@ -32,10 +32,30 @@ class UserManager extends AbstractManager
 
     public function userNumber($valid)
     {
-        $sql = 'SELECT COUNT(*) FROM comment WHERE validated = ?';
+        $sql = 'SELECT COUNT(*) FROM user WHERE activated = ?';
         $result = $this->queryExecute($sql, array($valid));
         $count = $result->fetch();
         return $count[0];
+    }
+
+    public function emailExist($email)
+    {
+        $sql = 'SELECT email FROM user WHERE email = ?';
+        $result = $this->queryExecute($sql, array($email));
+        $row = $result->fetch();
+        if($row) {
+            throw new LoginException('Cette adresse email est déjà utilisée.');
+        }
+    }
+
+    public function usernameExist($username)
+    {
+        $sql = 'SELECT username FROM user WHERE username = ?';
+        $result = $this->queryExecute($sql, array($username));
+        $row = $result->fetch();
+        if($row) {
+            throw new LoginException('Ce pseudonyme est déjà utilisé.');
+        }
     }
 
 
@@ -51,7 +71,7 @@ class UserManager extends AbstractManager
             $row = $result->fetch();
             return $row;            
         } else {
-            throw new Exception('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
+            throw new LoginException('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
         }                
     }
     
@@ -62,7 +82,7 @@ class UserManager extends AbstractManager
             $row = $result->fetch();
             return $row;            
         } else {
-            throw new Exception('L\'utilisateur ' . $username . ' n\'existe pas.');
+            throw new LoginException('L\'utilisateur ' . $username . ' n\'existe pas.');
         } 
     }
     
@@ -82,7 +102,7 @@ class UserManager extends AbstractManager
             $user->hydrate($row);
             return $user;
         } else {
-            throw new Exception('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
+            throw new LoginException('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
         } 
     }
 

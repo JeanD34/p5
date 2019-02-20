@@ -10,21 +10,26 @@ class CommentController {
     }
     
     public function comment()
-    {     
-        $comment = new Comment();
-        $_REQUEST['id_user_fk'] = $_SESSION['auth']['id'];
-        $comment->hydrate($_REQUEST);
-        $postId = $comment->getId_post_fk();
-        $this->commentManager->add($comment);
-        $headers = 'From: "Blog - Nouveau Commentaire"<webdev@jeandescorps.fr>'."\n";  
-        $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-        $headers .= 'Content-Transfer-Encoding: 8bit';
-        $subject = 'Nouveau commentaire sur votre blog';
-        $message = $_SESSION['auth']['username'] . ' à ajouté un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
-        mail('jean.wevdev@gmail.com', $subject, $message, $headers);
-        //$this->post($postId);
-        header("location: ?action=post&id=$postId#comment-block");
-        exit();
+    {   
+        if(!empty($_REQUEST['id_post_fk']) && !empty($_REQUEST['content'])) {
+            $comment = new Comment();
+            $_REQUEST['id_user_fk'] = $_SESSION['auth']['id'];
+            $comment->hydrate($_REQUEST);
+            $postId = $comment->getId_post_fk();
+            $this->commentManager->add($comment);
+            $headers = 'From: "Blog - Nouveau Commentaire"<webdev@jeandescorps.fr>'."\n";  
+            $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+            $headers .= 'Content-Transfer-Encoding: 8bit';
+            $subject = 'Nouveau commentaire sur votre blog';
+            $message = $_SESSION['auth']['username'] . ' à ajouté un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+            mail('jean.wevdev@gmail.com', $subject, $message, $headers);
+            $_SESSION['comment'] = 'Votre commentaire a été enregistré, il sera validé dans les plus bref délais.';            
+            header("Location: ?action=post&id=$postId#comment-block");
+            exit();
+        } else {
+            $_SESSION['postId'] = $_REQUEST['id_post_fk'];
+            throw new CommentException('Tous les champs sont requis !');
+        }
     }
     
     public function validateComment()
@@ -35,7 +40,7 @@ class CommentController {
         exit();
     }
     
-    public function updateCommentView()
+    public function updateCommentView($message = null)
     {
         $comment = $this->commentManager->find($_REQUEST['id']);
         if($_SESSION['auth']['role'] !== 'admin') {
@@ -43,13 +48,12 @@ class CommentController {
                 throw new Exception('Vous essayez de modifier un article qui ne vous appartient pas !');
             } else {
                 $view = new View('AdminUpdateComment');
-                $view->generate(array('comment' => $comment));
+                $view->generate(array('comment' => $comment, 'message' => $message));
             }
         } else {            
             $view = new View('AdminUpdateComment');
             $view->generate(array('comment' => $comment));
-        }
-        
+        }       
     }
     
     public function updateComment()
@@ -58,17 +62,21 @@ class CommentController {
         if($_SESSION['auth']['role'] !== 'admin') {
             if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
                 throw new Exception('Vous essayez de modifier un article dont vous n\'êtes pas l\'auteur !');
-            } else {               
-                $comment->hydrate($_REQUEST);
-                $this->commentManager->userUpdate($comment);
-                $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
-                $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-                $headers .= 'Content-Transfer-Encoding: 8bit';
-                $subject = 'Un commentaire a été modifié sur votre blog';
-                $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
-                mail('jean.wevdev@gmail.com', $subject, $message, $headers);
-                header("Location: ?action=profile");
-                exit();
+            } else {
+                if(!empty($_REQUEST['id']) && !empty($_REQUEST['content'])) {               
+                    $comment->hydrate($_REQUEST);
+                    $this->commentManager->userUpdate($comment);
+                    $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
+                    $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                    $headers .= 'Content-Transfer-Encoding: 8bit';
+                    $subject = 'Un commentaire a été modifié sur votre blog';
+                    $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+                    mail('jean.wevdev@gmail.com', $subject, $message, $headers);
+                    header("Location: ?action=profile");
+                    exit();
+                } else {
+                    throw new UpdateCommentException('Tous les champs sont requis !');
+                }
             }
         } else {
             $comment->hydrate($_REQUEST);
@@ -112,5 +120,17 @@ class CommentController {
         $invalidateComments = $this->commentManager->findAllInvalidate($limit, $offsetCINV);   
         $view = new View('AdminComments');
         $view->generate(array('invalidateComments' => $invalidateComments, 'validateComments' => $validateComments, 'pageCV' => $pageCV, 'pageCINV' => $pageCINV, 'totalPagesCV' => $totalPagesCV, 'totalPagesCINV' => $totalPagesCINV));
+    }
+
+    public function errorComment($error)
+    {
+        $_SESSION['error'] = $error;
+        header('Location: ?action=post&id='. $_SESSION['postId'] .'#comment-block');
+        exit();
+    }
+
+    public function errorUpdateComment($error)
+    {
+        $this->updateCommentView($error);
     }
 }

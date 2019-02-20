@@ -46,4 +46,11 @@ class Validator {
             }
         }        
     }
+
+    public static function validateEmail($email)
+    {
+        if(!preg_match("/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/i", $email)) {
+            throw new LoginException('L\'adresse email n\'est pas au bon format.');
+        }
+    }
 }

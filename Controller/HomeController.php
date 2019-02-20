@@ -20,6 +20,8 @@ class HomeController
     {
         if (!empty($_REQUEST['name']) && !empty($_REQUEST['email']) && !empty($_REQUEST['subject']) && !empty($_REQUEST['message'])) {
             
+            Validator::validateEmail($_REQUEST['email']);
+
             $headers = 'From: "Message - Blog - ' . $_REQUEST['name'] .'"<webdev@jeandescorps.fr>'."\n"; 
             $headers .= 'Reply-To: ' . $_REQUEST['email'] . "\n"; 
             $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 

@@ -43,15 +43,15 @@
                       </tbody>
                     </table>
                     <div class="text-center paging paging-user">
-            <?php if ($pageUINV > 1) : ?>
-        <a href="?action=userTable&pageUINV=1"><< </a> - <a href="?action=userTable&pageUINV=<?= $pageUINV - 1; ?>">Page précédente </a> -
+            <?php if ($pageUV > 1) : ?>
+        <a href="?action=userTable&pageUV=1"><< </a> - <a href="?action=userTable&pageUV=<?= $pageUV - 1; ?>">Page précédente </a> -
         <?php endif; ?>
-        <?php for ($i = 1; $i <= $totalPagesUINV; $i++): ?>
-        <a href="?action=userTable&pageUINV=<?php echo $i; ?>"><?= $i; ?></a> 
+        <?php for ($i = 1; $i <= $totalPagesUV; $i++): ?>
+        <a href="?action=userTable&pageUV=<?php echo $i; ?>"><?= $i; ?></a> 
         <?php endfor;?>   	
-        <?php if ($pageUINV < $totalPagesUINV) : ?>
-		- <a href="?action=userTable&pageUINV=<?= $pageUINV + 1; ?>">Page suivante</a>
-    - <a href="?action=userTable&pageUINV=<?= $totalPagesUINV ?>"> >></a>
+        <?php if ($pageUV < $totalPagesUV) : ?>
+		- <a href="?action=userTable&pageUV=<?= $pageUV + 1; ?>">Page suivante</a>
+    - <a href="?action=userTable&pageUV=<?= $totalPagesUV ?>"> >></a>
 		<?php endif; ?>
             </div>
                   </div>

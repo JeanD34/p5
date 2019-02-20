@@ -12,6 +12,9 @@
               <div class="col-lg-4">
                 <div class="card card-small mb-4 pt-3">
                   <div class="card-header border-bottom text-center">
+                  <?php if(isset($confirm)) : ?>
+                  <p class="alert alert-success"><?= $confirm ?></p>
+                  <?php endif; ?>
                     <div class="mb-3 mx-auto">
                       <img class="rounded-circle" src="Content/backend/images/avatars/<?= $user->getAvatar(); ?>" alt="Avatar" width="110"> 
                   	</div>
@@ -99,22 +102,27 @@
                       </div>
                       <div class="card-body p-0">
                       <?php foreach ($userComments as $comment) : ?>
+                      <?php 
+                      $dateComment = new DateTime($comment->getAdd_date());
+                      $now = new DateTime();
+                      $dayComment = $dateComment->diff($now)->format("%d");    
+                      ?>
                         <div class="blog-comments__item d-flex p-3">
                           <div class="blog-comments__avatar mr-3">
-                            <img src="Content/backend/images/avatars/1.jpg" alt="User avatar" /> </div>
+                            <img src="Content/backend/images/avatars/<?= $comment->getAvatar(); ?>" alt="Avatar" /> </div>
                           <div class="blog-comments__content">
                             <div class="blog-comments__meta text-muted">
-                              <a class="text-secondary" href="#">Pseudo</a> sur
-                              <a class="text-secondary" href="#">Nom Article</a>
-                              <span class="text-muted">– il y a "x" jours</span>
+                              <a class="text-secondary" href="?action=userProfile&id=<?= $comment->getId_user_fk(); ?>"><?= $comment->getUsername(); ?></a> sur
+                              <a class="text-secondary" href="?action=post&id=<?= $comment->getId_post_fk(); ?>" target="_blank"><?= $comment->getTitle(); ?></a>
+                              <span class="text-muted">– il y a <?= $dayComment ?> jours</span>
                             </div>
                             <p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
                             <div class="blog-comments__actions">
-                              <div class="btn-group btn-group-sm">
+                              <div class="btn-group btn-group-sm">                             	
                                 <button type="submit" class="btn btn-white confirm" data-toggle="modal" data-target="#commentModal" data-id="<?= $comment->getId(); ?>">
                               	<span class="text-danger">
                                 <i class="material-icons">clear</i>
-                              	</span> Supprimer </button>
+                              	</span> Rejeter </button>
                                 <button type="submit" class="btn btn-white">
                                   <span class="text-light">
                                     <i class="material-icons">more_vert</i>

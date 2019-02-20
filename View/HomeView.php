@@ -197,7 +197,8 @@
               </div>
             </form>
             <?php if(isset($_SESSION['validMail'])) : ?>
-            <p class="send"><?= $_SESSION['validMail'] ?></p>
+            <p class="send"><?= $_SESSION['validMail']; ?></p>
+            <?php unset($_SESSION['validMail']); ?>
             <?php endif; ?>
             <?php if(isset($error)) : ?>
             <p class="errormessage"><?= $error ?></p>

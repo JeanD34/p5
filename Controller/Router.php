@@ -126,6 +126,10 @@ class Router
             }
         } catch (MailException $e) {
             $this->homeController->errorMail($e->getMessage());
+        } catch (CommentException $e) {
+            $this->commentController->errorComment($e->getMessage());
+        } catch (UpdateCommentException $e) {
+            $this->commentController->errorUpdateComment($e->getMessage());
         } catch (LoginException $e) {
             $this->userController->errorConnecting($e->getMessage());            
         } catch (Exception $e) {

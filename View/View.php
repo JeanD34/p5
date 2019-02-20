@@ -20,8 +20,7 @@ class View
             $view = $this->fileGenerate('view/AdminLayout.php',
                 array('title' => $this->title, 'content' => $content));
         }
-        echo $view;
-        
+        echo $view;        
     }
     
     private function fileGenerate($file, $datas) 

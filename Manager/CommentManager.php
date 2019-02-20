@@ -116,7 +116,7 @@ class CommentManager extends AbstractManager
     
     public function findLastUserComment($id) {
         $userComments = [];
-        $sql = 'SELECT * FROM comment WHERE validated = 1 AND id_user_fk = ? LIMIT 3';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 AND comment.id_user_fk = ? LIMIT 3';
         $result = $this->queryExecute($sql, array($id));
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {

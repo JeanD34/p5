@@ -21,48 +21,60 @@ class UserController
     
     public function login()
     {        
-        $user = $this->userManager->log($_REQUEST['username']);
-        if(password_verify($_REQUEST['password'], $user['password'])) {
-            $_SESSION['auth'] = $user;
-            if ($user['role'] === 'user') {
-                if($_SESSION['action'] === 'userProfile') {
-                    $this->userProfile();
-                } else {
-                    $this->profile();
-                }                
-            } elseif ($user['role'] === 'admin') {
-                if($_SESSION['action'] === 'userProfile') {
-                    $this->userProfile(); 
-                } else {
-                    header("Location: ?action=admin");
-                    exit();
+        if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) {
+            $user = $this->userManager->log($_REQUEST['username']);
+            if(password_verify($_REQUEST['password'], $user['password'])) {
+                $_SESSION['auth'] = $user;
+                if ($user['role'] === 'user') {
+                    if($_SESSION['action'] === 'userProfile') {
+                        $this->userProfile();
+                    } else {
+                        $this->profile();
+                    }                
+                } elseif ($user['role'] === 'admin') {
+                    if($_SESSION['action'] === 'userProfile') {
+                        $this->userProfile(); 
+                    } else {
+                        header("Location: ?action=admin");
+                        exit();
+                    }
                 }
+            } else {
+                throw new LoginException('Identifiants incorrects');
             }
         } else {
-            throw new Exception('Identifiants incorrects');
+            throw new LoginException('Vous devez remplir tous les champs pour vous inscrire !');
         }
     }
     
     public function addUser() 
     {
-        $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
-        $_REQUEST['confirmation_token'] = bin2hex(random_bytes(64));
-        $user = new User();
-        $user->hydrate($_REQUEST);
-        $this->userManager->add($user);
-        $user_id = $this->userManager->lastId();
-        $token = $_REQUEST['confirmation_token'];
-        $subject = 'Confirmation creation compte';
-        $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
-        $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
-        $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
-        $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-        $headers .= 'Content-Transfer-Encoding: 8bit';
-        mail($_REQUEST['email'], $subject, $content, $headers);
-        $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer";
-        $view = new View("Login");
-        $view->generate(array('validMsg' => $validMsg));
-
+        if(!empty($_REQUEST['username']) && !empty($_REQUEST['email']) && !empty($_REQUEST['password'])) {
+            // Validation
+            Validator::validateEmail($_REQUEST['email']);
+            $this->userManager->emailExist($_REQUEST['email']);
+            $this->userManager->usernameExist($_REQUEST['username']);
+            // End Validation
+            $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
+            $_REQUEST['confirmation_token'] = bin2hex(random_bytes(64));
+            $user = new User();
+            $user->hydrate($_REQUEST);
+            $this->userManager->add($user);
+            $user_id = $this->userManager->lastId();
+            $token = $_REQUEST['confirmation_token'];
+            $subject = 'Confirmation creation compte';
+            $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
+            $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
+            $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
+            $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+            $headers .= 'Content-Transfer-Encoding: 8bit';
+            mail($_REQUEST['email'], $subject, $content, $headers);
+            $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer.";
+            $view = new View("Login");
+            $view->generate(array('validMsg' => $validMsg));
+        } else {
+            throw new LoginException('Vous devez remplir tous les champs pour vous inscrire !');
+        }
     }
 
     public function deleteUser() 
@@ -78,19 +90,19 @@ class UserController
         if ($user && $user['confirmation_token'] == $_REQUEST['token']) {
             $this->userManager->activation($_REQUEST['id']);
             $_SESSION['auth'] = $user;
-            $this->profile();
-            
+            $message = 'Votre compte est validé, bienvenue !';
+            $this->profile($message);           
         } else {
             throw new Exception('Action invalide');
         }
     }
     
-    public function profile() 
+    public function profile($message = null) 
     {   
         $user = $this->userManager->find($_SESSION['auth']['id']);
         $userComments = $this->commentManager->findLastUserComment($user->getId());
         $view = new View("AdminUser");
-        $view->generate(array('user' => $user, 'userComments' => $userComments));
+        $view->generate(array('user' => $user, 'userComments' => $userComments, 'message' => $message));
     }
 
     public function userProfile()
@@ -145,18 +157,18 @@ class UserController
         } else {
             $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
         }
+        Validator::validateEmail($_REQUEST['email']);
         $user->hydrate($_REQUEST);
         $this->userManager->update($user);
-        header("Location: ?action=profile");
-        exit();
+        $message = 'Votre compte a été mis à jour !';
+        $this->profile($message);
     }
     
     public function errorConnecting($error) 
     {   
         $_SESSION['action'] = $_REQUEST['action'];
         $view = new View("Login");
-        $view->generate(array('error' => $error));
-        
+        $view->generate(array('error' => $error));        
     }
     
     public function logout() 

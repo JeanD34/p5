@@ -1,4 +1,4 @@
-<?php $this->title = 'Test - ' . $post->getTitle(); ?>
+<?php $this->title = $post->getTitle(); ?>
 
 <div class="main-content paddsection">
     <div class="container">
@@ -31,7 +31,7 @@
               <div class="col-md-12">
                 <div class="comments text-left padDiv mb-30">
                   <div class="entry-comments">
-                    <h6 id="comment-block" class="mb-30"><?= $nbComment; ?> commentaires</h6>
+                    <h6 class="mb-30"><?= $nbComment; ?> commentaires</h6>
                     <?php if (!empty($comments)) : ?>
                     <?php foreach ($comments as $comment) : ?>
                     <ul class="entry-comments-list list-unstyled">
@@ -53,16 +53,24 @@
                 </div>
               </div>
               <?php if(isset($_SESSION['auth'])) : ?>
-              <div class="col-lg-12">
+              <div id="comment-block" class="col-lg-12">
                 <div class="cmt padDiv">
                 <div class="mb-4"><?= $_SESSION['auth']['username']?></div>
+                  <?php if(isset($_SESSION['comment'])) : ?>
+                  <p class="alert alert-success"><?= $_SESSION['comment']; ?></p>
+                  <?php unset($_SESSION['comment']); ?>
+                  <?php endif; ?>
+                  <?php if(isset($_SESSION['error'])) : ?>
+                  <p class="alert alert-danger"><?= $_SESSION['error']; ?></p>
+                  <?php unset($_SESSION['error']); ?>
+                  <?php endif; ?>
                 <div class="mb-4">Les commentaires sont soumis à validation et limités à 1000 caractères.</div>
                   <form id="comment-form" method="post" action="index.php?action=comment" role="form">
                   <input type="hidden" name="id_post_fk" value="<?= $post->getId(); ?>">
                     <div class="row">
                         <div class="col-lg-12">
                           <div class="form-group">
-                            <textarea id="form_message" name="content" class="form-control" placeholder="Message *" style="height: 200px;" required="required"></textarea>
+                            <textarea id="form_message" name="content" class="form-control" placeholder="Message *" style="height: 200px;" required></textarea>
                           </div>
                         </div>
                         <div class="col-lg-12">
