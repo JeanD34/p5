@@ -29,7 +29,7 @@ class CommentController {
             header("Location: ?action=post&id=$postId#comment-block");
             exit();
         } else {
-            $_SESSION['postId'] = $_REQUEST['id_post_fk'];
+            $_SESSION['postId'] = htmlspecialchars($_REQUEST['id_post_fk']);
             throw new CommentException('Tous les champs sont requis !');
         }
     }
