@@ -694,7 +694,7 @@ p.send {
 p.errormessage {
   color: red;
   border: 1px solid red;
-  display: inline-block
+  display: inline-block;
   text-align: center;
   padding: 15px;
   font-weight: 600;

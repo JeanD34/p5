@@ -16,6 +16,8 @@ class PostController {
     public function post() 
     {
         $post = $this->postManager->find($_REQUEST['id']);
+        $_SESSION['actionPost'] = $_REQUEST['action'];
+        $_SESSION['id'] = $_REQUEST['id'];
         $nbComment = $this->commentManager->countPostComments($_REQUEST['id']);
         $user = $this->userManager->find($post->getId_user_fk());
         $comments = $this->commentManager->findAll($_REQUEST['id']);

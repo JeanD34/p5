@@ -28,12 +28,18 @@ class UserController
                 if ($user['role'] === 'user') {
                     if($_SESSION['action'] === 'userProfile') {
                         $this->userProfile();
+                    } elseif($_SESSION['actionPost'] === 'post') {
+                        header('Location: ?action=post&id=' . $_SESSION['id'] .'#comment-block');
+                        exit();
                     } else {
                         $this->profile();
                     }                
                 } elseif ($user['role'] === 'admin') {
                     if($_SESSION['action'] === 'userProfile') {
                         $this->userProfile(); 
+                    } elseif($_SESSION['actionPost'] === 'post') {
+                        header('Location: ?action=post&id=' . $_SESSION['id'] .'#comment-block');
+                        exit();
                     } else {
                         header("Location: ?action=admin");
                         exit();
@@ -54,24 +60,27 @@ class UserController
             if(Validator::validateEmail($_REQUEST['email'])) {
                 $this->userManager->emailExist($_REQUEST['email']);
                 $this->userManager->usernameExist($_REQUEST['username']);
-
-                $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
-                $_REQUEST['confirmation_token'] = bin2hex(random_bytes(64));
-                $user = new User();
-                $user->hydrate($_REQUEST);
-                $this->userManager->add($user);
-                $user_id = $this->userManager->lastId();
-                $token = $_REQUEST['confirmation_token'];
-                $subject = 'Confirmation creation compte';
-                $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
-                $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
-                $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
-                $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-                $headers .= 'Content-Transfer-Encoding: 8bit';
-                mail($_REQUEST['email'], $subject, $content, $headers);
-                $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer.";
-                $view = new View("Login");
-                $view->generate(array('validMsg' => $validMsg));
+                if(Validator::validatePasswordLength($_REQUEST['password'])) {
+                    $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
+                    $_REQUEST['confirmation_token'] = bin2hex(random_bytes(64));
+                    $user = new User();
+                    $user->hydrate($_REQUEST);
+                    $this->userManager->add($user);
+                    $user_id = $this->userManager->lastId();
+                    $token = $_REQUEST['confirmation_token'];
+                    $subject = 'Confirmation creation compte';
+                    $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
+                    $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
+                    $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
+                    $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                    $headers .= 'Content-Transfer-Encoding: 8bit';
+                    mail($_REQUEST['email'], $subject, $content, $headers);
+                    $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer.";
+                    $view = new View("Login");
+                    $view->generate(array('validMsg' => $validMsg));
+                } else {
+                    throw new LoginException('Le mot de passe doit contenir au moins 6 caractères.');
+                }
             } else {
                 throw new LoginException('L\'adresse email n\'est pas au bon format.');
             }
@@ -156,15 +165,23 @@ class UserController
             $_REQUEST['avatar'] = Validator::validateAvatar($_FILES['avatar']);
         } 
         if (empty($_REQUEST['password'])) {
-            $_REQUEST['password'] = $user->getPassword();
+            if(Validator::validatePasswordLength) {
+                $_REQUEST['password'] = $user->getPassword();
+            } else {
+                throw new AccountException('Le mot de passe doit contenir au moins 6 caractères.');
+            }
         } else {
             $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
         }
         if(Validator::validateEmail($_REQUEST['email'])) {
-            $user->hydrate($_REQUEST);
-            $this->userManager->update($user);
-            $message = 'Votre compte a été mis à jour !';
-            $this->profile($message);
+            if(Validator::validateDescriptionLength($_REQUEST['description'])) {
+                $user->hydrate($_REQUEST);
+                $this->userManager->update($user);
+                $message = 'Votre compte a été mis à jour !';
+                $this->profile($message);
+            } else {
+                throw new AccountException('La description est limitée à 800 caractères.');
+            }
         } else {
             throw new AccountException('L\'adresse email n\'est pas au bon format.');
         }

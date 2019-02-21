@@ -16,18 +16,23 @@ class CommentController {
         if(!empty($_REQUEST['id_post_fk']) && !empty($_REQUEST['content'])) {          
             $comment = new Comment();
             $_REQUEST['id_user_fk'] = $_SESSION['auth']['id'];
-            $comment->hydrate($_REQUEST);
-            $postId = $comment->getId_post_fk();
-            $this->commentManager->add($comment);
-            $headers = 'From: "Blog - Nouveau Commentaire"<webdev@jeandescorps.fr>'."\n";  
-            $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-            $headers .= 'Content-Transfer-Encoding: 8bit';
-            $subject = 'Nouveau commentaire sur votre blog';
-            $message = $_SESSION['auth']['username'] . ' à ajouté un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
-            mail('jean.wevdev@gmail.com', $subject, $message, $headers);
-            $_SESSION['comment'] = 'Votre commentaire a été enregistré, il sera validé dans les plus bref délais.';            
-            header("Location: ?action=post&id=$postId#comment-block");
-            exit();
+            if(Validator::validateCommentLength($_REQUEST['content'])) {
+                $comment->hydrate($_REQUEST);
+                $postId = $comment->getId_post_fk();
+                $this->commentManager->add($comment);
+                $headers = 'From: "Blog - Nouveau Commentaire"<webdev@jeandescorps.fr>'."\n";  
+                $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                $headers .= 'Content-Transfer-Encoding: 8bit';
+                $subject = 'Nouveau commentaire sur votre blog';
+                $message = $_SESSION['auth']['username'] . ' à ajouté un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+                mail('jean.wevdev@gmail.com', $subject, $message, $headers);
+                $_SESSION['comment'] = 'Votre commentaire a été enregistré, il sera validé dans les plus bref délais.';            
+                header("Location: ?action=post&id=$postId#comment-block");
+                exit();
+            } else {
+                $_SESSION['postId'] = htmlspecialchars($_REQUEST['id_post_fk']);
+                throw new CommentException('Les commentaires sont limités à 1000 caractères');
+            }
         } else {
             $_SESSION['postId'] = htmlspecialchars($_REQUEST['id_post_fk']);
             throw new CommentException('Tous les champs sont requis !');
