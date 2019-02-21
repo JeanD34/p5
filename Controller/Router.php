@@ -130,6 +130,8 @@ class Router
             $this->commentController->errorComment($e->getMessage());
         } catch (UpdateCommentException $e) {
             $this->commentController->errorUpdateComment($e->getMessage());
+        } catch (AvatarException $e) {
+            $this->userController->errorAvatar($e->getMessage());
         } catch (AccountException $e) {
             $this->userController->errorAccount($e->getMessage());
         } catch (LoginException $e) {

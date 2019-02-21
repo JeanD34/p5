@@ -17,7 +17,8 @@
                         <input class="form-control form-control-lg mb-3" type="file" name="image">
                         <textarea class="form-control form-control-lg mb-3"  rows="10" name="content" placeholder="Contenu de l'article"></textarea>
                         <button type="submit" class="btn btn-sm btn-accent ml-auto">
-                        	<i class="material-icons">file_copy</i>Ajouter article</button>
+                        	<i class="material-icons">file_copy</i>Ajouter article
+                        </button>
                     </form>
                 </div>
             </div>

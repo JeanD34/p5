@@ -154,9 +154,7 @@ class UserController
         $user = $this->userManager->find($_SESSION['auth']['id']);
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {      
             $_REQUEST['avatar'] = Validator::validateAvatar($_FILES['avatar']);
-        } else {
-            throw new AvatarException('Une erreur est survenue avec votre image');
-        }
+        } 
         if (empty($_REQUEST['password'])) {
             $_REQUEST['password'] = $user->getPassword();
         } else {
@@ -179,7 +177,12 @@ class UserController
         $view->generate(array('error' => $error));        
     }
 
-    public function errorAccount($error) {
+    public function errorAccount($error) 
+    {
+        $this->profile($message = null, $error);
+    }
+
+    public function errorAvatar($error) {
         $this->profile($message = null, $error);
     }
     
