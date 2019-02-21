@@ -7,7 +7,7 @@ abstract class AbstractManager
     private function getBdd() 
     {
         if ($this->bdd == null) {
-            $this->bdd = new PDO("mysql:host=". HOST .";dbname=". DBNAME .";charset=utf8", USER, PASS, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+            $this->bdd = new PDO("mysql:host=". HOST .";dbname=". DBNAME .";charset=utf8", USER, PASS, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         }
         return $this->bdd;
     }
