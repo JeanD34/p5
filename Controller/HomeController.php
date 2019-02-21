@@ -20,18 +20,22 @@ class HomeController
     {
         if (!empty($_REQUEST['name']) && !empty($_REQUEST['email']) && !empty($_REQUEST['subject']) && !empty($_REQUEST['message'])) {
             
-            Validator::validateEmail($_REQUEST['email']);
+            if(Validator::validateEmail($_REQUEST['email'])) {
 
-            $headers = 'From: "Message - Blog - ' . $_REQUEST['name'] .'"<webdev@jeandescorps.fr>'."\n"; 
-            $headers .= 'Reply-To: ' . $_REQUEST['email'] . "\n"; 
-            $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-            $headers .= 'Content-Transfer-Encoding: 8bit';
+                $headers = 'From: "Message - Blog - ' . $_REQUEST['name'] .'"<webdev@jeandescorps.fr>'."\n"; 
+                $headers .= 'Reply-To: ' . $_REQUEST['email'] . "\n"; 
+                $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                $headers .= 'Content-Transfer-Encoding: 8bit';
 
-            if(!mail('jean.wevdev@gmail.com', $_REQUEST['subject'], $_REQUEST['message'], $headers)) {
-                throw new MailException('Une erreur est survenue. Pour nous contactez directement : jean.webdev@gmail.com');
+                if(!mail('jean.wevdev@gmail.com', $_REQUEST['subject'], $_REQUEST['message'], $headers)) {
+                    throw new MailException('Une erreur est survenue. Pour nous contactez directement : jean.webdev@gmail.com');
+                } else {
+                    $_SESSION['validMail'] = 'Votre email a été envoyé avec succès. Nous vous re-contacterons dès que possible';
+                    header('Location: index.php#contactForm');
+                }
+
             } else {
-                $_SESSION['validMail'] = 'Votre email a été envoyé avec succès. Nous vous re-contacterons dès que possible';
-                header('Location: index.php#contactForm');
+                throw new MailException('L\'adresse email n\'est pas au bon format.');
             }
         } else {
             throw new MailException('Tous les champs sont requis !');

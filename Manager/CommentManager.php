@@ -60,7 +60,7 @@ class CommentManager extends AbstractManager
 
     public function commentUserNumber($id)
     {
-        $sql = 'SELECT COUNT(*) FROM comment WHERE validated = 1 AND id = ?';
+        $sql = 'SELECT COUNT(*) FROM comment WHERE validated = 1 AND id_user_fk = ?';
         $result = $this->queryExecute($sql, array($id));
         $count = $result->fetch();
         return $count[0];
@@ -78,14 +78,14 @@ class CommentManager extends AbstractManager
             return $comment;
             
         } else {
-            throw new Exception('Le commentaire numéro ' . $commentId . ' n\'existe pas.');
+            throw new Exception('Ce commentaite n\'existe pas');
         }
     }
 
     public function findAllUserComments($userId)
     {
         $userComments = [];
-        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 AND comment.id_user_fk = ?';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 AND comment.id_user_fk = ? ORDER BY comment.id DESC';
         $result = $this->queryExecute($sql, array($userId));
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
@@ -101,7 +101,7 @@ class CommentManager extends AbstractManager
     public function findLastThree() 
     {   
         $comments = [];
-        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 0 LIMIT 3';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 0 ORDER BY comment.id DESC LIMIT 3';
         $result = $this->queryExecute($sql);
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {
@@ -116,7 +116,7 @@ class CommentManager extends AbstractManager
     
     public function findLastUserComment($id) {
         $userComments = [];
-        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 AND comment.id_user_fk = ? LIMIT 3';
+        $sql = 'SELECT comment.id, comment.content, comment.add_date, comment.id_user_fk, comment.id_post_fk, username, avatar, post.title FROM comment JOIN user ON comment.id_user_fk = user.id JOIN post ON comment.id_post_fk = post.id WHERE validated = 1 AND comment.id_user_fk = ? ORDER BY comment.id DESC LIMIT 3';
         $result = $this->queryExecute($sql, array($id));
         if ($result->rowCount() >= 1) {
             foreach ($result->fetchAll() as $row) {

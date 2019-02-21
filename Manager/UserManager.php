@@ -71,7 +71,7 @@ class UserManager extends AbstractManager
             $row = $result->fetch();
             return $row;            
         } else {
-            throw new LoginException('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
+            throw new LoginException('Cet utilisateur n\'existe pas.');
         }                
     }
     
@@ -82,7 +82,7 @@ class UserManager extends AbstractManager
             $row = $result->fetch();
             return $row;            
         } else {
-            throw new LoginException('L\'utilisateur ' . $username . ' n\'existe pas.');
+            throw new LoginException('Cet utilisateur n\'existe pas.');
         } 
     }
     
@@ -102,7 +102,7 @@ class UserManager extends AbstractManager
             $user->hydrate($row);
             return $user;
         } else {
-            throw new LoginException('L\'utilisateur numéro ' . $id . ' n\'existe pas.');
+            throw new LoginException('Cet utilisateur n\'existe pas.');
         } 
     }
 

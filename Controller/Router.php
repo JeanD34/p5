@@ -17,8 +17,8 @@ class Router
     
     public function queryRouting() 
     {
-        try {
-            if (isset($_REQUEST['action'])) {
+        try {         
+            if (isset($_REQUEST['action'])) {                             
                 $loggedAction = array('comment','validateComment', 'editCommentView', 'editComment', 'deleteComment', 'adminComments', 'profile', 'userTable', 'deleteUser', 'logout', 'admin', 'adminPosts', 'deletePost', 'updateView', 'updatePost', 'addPostView', 'addPost');
                 $loggedAdminAction = array('validateComment', 'adminComments', 'admin', 'adminPosts', 'deletePost','updateView', 'updatePost', 'addPostView', 'addPost', 'userTable', 'deleteUser');
                 if (in_array($_REQUEST['action'], $loggedAction)) {
@@ -130,6 +130,8 @@ class Router
             $this->commentController->errorComment($e->getMessage());
         } catch (UpdateCommentException $e) {
             $this->commentController->errorUpdateComment($e->getMessage());
+        } catch (AccountException $e) {
+            $this->userController->errorAccount($e->getMessage());
         } catch (LoginException $e) {
             $this->userController->errorConnecting($e->getMessage());            
         } catch (Exception $e) {

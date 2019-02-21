@@ -262,7 +262,7 @@ body > div.container.paddsections > div:nth-child(1) > img {
 }
 
 .login-logo {
-  padding-bottom: 8rem;
+  padding-bottom: 5rem;
 }
 
 .logo {
@@ -653,6 +653,10 @@ body > div.text-left.paddsection > div:nth-child(3) > div {
   margin-top: 50px;
 }
 
+#footer .socials-media {
+    width: 100%;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Contact
 /*-----------------------------------------------------------------------------------*/
@@ -674,6 +678,7 @@ body > div.text-left.paddsection > div:nth-child(3) > div {
 
 #contact input, #contact textarea {
   width: 100%;
+
 }
 
 p.send {
@@ -683,13 +688,13 @@ p.send {
   text-align: center;
   padding: 15px;
   font-weight: 600;
-  margin: 15px;
+  margin: 15px
 }
 
 p.errormessage {
   color: red;
   border: 1px solid red;
-  display: inline-block;
+  display: inline-block
   text-align: center;
   padding: 15px;
   font-weight: 600;

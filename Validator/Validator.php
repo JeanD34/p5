@@ -1,7 +1,7 @@
 <?php
 
 class Validator {
-    
+   
     public static function validateUser()
     {
         if(isset($_SESSION['auth'])) {
@@ -24,9 +24,8 @@ class Validator {
             $file_info = pathinfo($params['name']);
             $upload_extension = $file_info['extension'];
             $valid_extension = array('jpg', 'jpeg', 'gif', 'png');
-            if (in_array($upload_extension, $valid_extension)) {
-                
-                move_uploaded_file($params['tmp_name'], 'C:/wamp64/www/eclipse/test_mvc_poo/Content/images/' . basename($params['name']));
+            if (in_array($upload_extension, $valid_extension)) {               
+                move_uploaded_file($params['tmp_name'], UPLOAD_IMAGE_PATH . basename($params['name']));
                 return basename($params['name']);
             }
         }        
@@ -39,18 +38,34 @@ class Validator {
             $file_info = pathinfo($params['name']);
             $upload_extension = $file_info['extension'];
             $valid_extension = array('jpg', 'jpeg', 'gif', 'png');
-            if (in_array($upload_extension, $valid_extension)) {
-                
-                move_uploaded_file($params['tmp_name'], 'C:/wamp64/www/eclipse/test_mvc_poo/Content/images/' . basename($params['name']));
+            if (in_array($upload_extension, $valid_extension)) {               
+                move_uploaded_file($params['tmp_name'], UPLOAD_AVATAR_PATH . basename($params['name']));
                 return basename($params['name']);
+            } else {
+                throw new AvatarException('Votre image doit être au format jpg, jpeg, gif ou png.');
             }
-        }        
+        } else {
+            throw new AvatarException('Votre image ne doit pas excéder 1 Mo.');
+        }
     }
 
     public static function validateEmail($email)
     {
-        if(!preg_match("/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/i", $email)) {
-            throw new LoginException('L\'adresse email n\'est pas au bon format.');
+        if(preg_match("/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/i", $email)) {
+            return true;
         }
+    }
+
+    public static function validateLength($fullComment, $idComment)
+    {   
+        $fullComment = htmlspecialchars($fullComment);
+        $idComment = htmlspecialchars($idComment);
+        $commentLength = 150;
+        if(strlen($fullComment) <= $commentLength) {
+            $content = $fullComment;
+        } else {
+            $content = substr($fullComment, 0, $commentLength) . '<a href="?action=editCommentView&id='. $idComment .'">...</a>';
+        }
+        return $content;
     }
 }

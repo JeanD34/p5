@@ -16,7 +16,8 @@
                     <?php $i = 0; ?>
                     <?php $nbComment = count($userComments);?>
                     <?php foreach ($userComments as $comment) : ?>
-                    <?php 
+                    <?php
+                        $content = Validator::validateLength($comment->getContent(), $comment->getId());
                       $dateComment = new DateTime($comment->getAdd_date());
                       $now = new DateTime();
                       $dayComment = $dateComment->diff($now)->format("%d");    
@@ -35,7 +36,7 @@
                                     <a class="text-secondary" target="_blank" href="?action=post&id=<?= $comment->getId_post_fk(); ?>"><?= $comment->getTitle(); ?></a>
                         			<span class="text-muted">– il y a <?= $dayComment ?> jours</span>
                    			 	</div>
-                    			<p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
+                    			<p class="m-0 my-1 mb-2 text-muted"><?= $content ?></p>
                         		<div class="blog-comments__actions">
                             		<div class="btn-group btn-group-sm">
                                         <button type="submit" class="btn btn-white confirm" data-toggle="modal" data-target="#commentModal" data-id="<?= $comment->getId(); ?>">
@@ -55,18 +56,18 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                     </div>
-                    <div class="text-center mb-3 mt-3 paging">
-            <?php if ($pageCV > 1) : ?>
-        <a href="?action=adminComments&pageCV=1#commentVal"><< </a> - <a href="?action=adminComments&pageCV=<?= $pageCV - 1; ?>#commentVal">Page précédente </a> -
-        <?php endif; ?>
-        <?php for ($i = 1; $i <= $totalPagesCV; $i++): ?>
-        <a href="?action=adminComments&pageCV=<?php echo $i; ?>#commentVal"><?= $i; ?></a> 
-        <?php endfor;?>   	
-        <?php if ($pageCV < $totalPagesCV) : ?>
-		- <a href="?action=adminComments&pageCV=<?= $pageCV + 1; ?>#commentVal">Page suivante</a>
-    - <a href="?action=adminComments&pageCV=<?= $totalPagesCV ?>#commentVal"> >></a>
-		<?php endif; ?>
-            </div>
+                <div class="text-center mb-3 mt-3 paging">
+                <?php if ($pageCV > 1) : ?>
+                <a href="?action=userComments&pageCV=1"><< </a> - <a href="?action=userComments&pageCV=<?= $pageCV - 1; ?>">Page précédente </a> -
+                <?php endif; ?>
+                <?php for ($i = 1; $i <= $totalPagesCV; $i++) : ?>
+                <a href="?action=userComments&pageCV=<?php echo $i; ?>"><?= $i; ?></a> 
+                <?php endfor; ?>   	
+                <?php if ($pageCV < $totalPagesCV) : ?>
+                - <a href="?action=userComments&pageCV=<?= $pageCV + 1; ?>">Page suivante</a>
+            - <a href="?action=userComments&pageCV=<?= $totalPagesCV ?>"> >></a>
+                <?php endif; ?>
+                </div>
                 </div>
             </div>
         </div>

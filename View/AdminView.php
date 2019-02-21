@@ -61,6 +61,7 @@
                       <div class="card-body p-0">
                       <?php foreach ($commentToValidate as $comment) : ?>
                       <?php 
+                      $content = Validator::validateLength($comment->getContent(), $comment->getId());
                       $dateComment = new DateTime($comment->getAdd_date());
                       $now = new DateTime();
                       $dayComment = $dateComment->diff($now)->format("%d");    
@@ -74,7 +75,7 @@
                               <a class="text-secondary" href="?action=post&id=<?= $comment->getId_post_fk(); ?>" target="_blank"><?= $comment->getTitle(); ?></a>
                               <span class="text-muted">– il y a <?= $dayComment ?> jours</span>
                             </div>
-                            <p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
+                            <p class="m-0 my-1 mb-2 text-muted"><?= $content ?></p>
                             <div class="blog-comments__actions">
                               <div class="btn-group btn-group-sm">
                               	<button type="submit" class="btn btn-white">

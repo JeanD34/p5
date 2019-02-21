@@ -17,6 +17,7 @@
                     <?php $nbInvaComment = count($invalidateComments);?>
                     <?php foreach ($invalidateComments as $comment) : ?>
                     <?php 
+                    $content = Validator::validateLength($comment->getContent(), $comment->getId());
                     $dateCommentInv = new DateTime($comment->getAdd_date());
                     $now = new DateTime();
                     $dayCommentInv = $dateCommentInv->diff($now)->format("%d");
@@ -35,7 +36,7 @@
                                     <a class="text-secondary" target="_blank" href="?action=post&id=<?= $comment->getId_post_fk(); ?>"><?= $comment->getTitle(); ?></a>
                         			<span class="text-muted">– il y a <?= $dayCommentInv ?> jours</span>
                    			 	</div>
-                    			<p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
+                    			<p class="m-0 my-1 mb-2 text-muted"><?= $content ?></p>
                         		<div class="blog-comments__actions">
                             		<div class="btn-group btn-group-sm">
                     					<button type="submit" class="btn btn-white">
@@ -88,7 +89,8 @@
                     <?php $i = 0; ?>
                     <?php $nbVaComment = count($validateComments);?>
                     <?php foreach ($validateComments as $comment) : ?>
-                    <?php 
+                    <?php
+                    $content = Validator::validateLength($comment->getContent(), $comment->getId()); 
                     $dateCommentVal = new DateTime($comment->getAdd_date());
                     $now = new DateTime();
                     $dayCommentVal = $dateCommentVal->diff($now)->format("%d");
@@ -107,7 +109,7 @@
                                     <a class="text-secondary" target="_blank" href="?action=post&id=<?= $comment->getId_post_fk(); ?>#<?= $comment->getId(); ?>"><?= $comment->getTitle(); ?></a>
                                     <span class="text-muted">– il y a <?= $dayCommentVal ?> jours</span>
                                 </div>
-                                <p class="m-0 my-1 mb-2 text-muted"><?= $comment->getContent(); ?></p>
+                                <p class="m-0 my-1 mb-2 text-muted"><?= $content ?></p>
                                 <div class="blog-comments__actions">
                                     <div class="btn-group btn-group-sm">         
                                         <button type="submit" class="btn btn-white confirm" data-toggle="modal" data-target="#commentModal" data-id="<?= $comment->getId(); ?>">

@@ -12,8 +12,11 @@
               <div class="col-lg-4">
                 <div class="card card-small mb-4 pt-3">
                   <div class="card-header border-bottom text-center">
-                  <?php if(isset($confirm)) : ?>
-                  <p class="alert alert-success"><?= $confirm ?></p>
+                  <?php if(isset($message)) : ?>
+                  <p class="alert alert-success"><?= $message ?></p>
+                  <?php endif; ?>
+                  <?php if(isset($error)) : ?>
+                  <p class="alert alert-danger"><?= $error ?></p>
                   <?php endif; ?>
                     <div class="mb-3 mx-auto">
                       <img class="rounded-circle" src="Content/backend/images/avatars/<?= $user->getAvatar(); ?>" alt="Avatar" width="110"> 
@@ -52,7 +55,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" placeholder="Email" name="email" value="<?= $user->getEmail(); ?>"> 
+                                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="<?= $user->getEmail(); ?>"> 
                                     </div>
                                 </div>
                                 <div class="form-row">

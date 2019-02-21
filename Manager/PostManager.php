@@ -28,7 +28,7 @@ Class PostManager extends AbstractManager
             return $post;
 
         } else {
-            throw new Exception('L\'article numéro ' . $postId . ' n\'existe pas.');
+            throw new Exception('Cet article n\'existe pas.');
         }
     }
     

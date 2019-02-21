@@ -3,15 +3,17 @@
 class CommentController {
     
     private $commentManager;
+    private $userController;
     
     public function __construct()
     {
         $this->commentManager = new CommentManager();
+        $this->userController = new UserController();      
     }
     
     public function comment()
     {   
-        if(!empty($_REQUEST['id_post_fk']) && !empty($_REQUEST['content'])) {
+        if(!empty($_REQUEST['id_post_fk']) && !empty($_REQUEST['content'])) {          
             $comment = new Comment();
             $_REQUEST['id_user_fk'] = $_SESSION['auth']['id'];
             $comment->hydrate($_REQUEST);
@@ -42,66 +44,77 @@ class CommentController {
     
     public function updateCommentView($message = null)
     {
-        $comment = $this->commentManager->find($_REQUEST['id']);
-        if($_SESSION['auth']['role'] !== 'admin') {
-            if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
-                throw new Exception('Vous essayez de modifier un article qui ne vous appartient pas !');
-            } else {
+        if(!empty($_REQUEST['id'])) {
+            $comment = $this->commentManager->find($_REQUEST['id']);
+            if($_SESSION['auth']['role'] !== 'admin') {
+                if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
+                    throw new Exception('Vous essayez de modifier un article qui ne vous appartient pas !');
+                } else {
+                    $view = new View('AdminUpdateComment');
+                    $view->generate(array('comment' => $comment, 'message' => $message));
+                }
+            } else {            
                 $view = new View('AdminUpdateComment');
-                $view->generate(array('comment' => $comment, 'message' => $message));
+                $view->generate(array('comment' => $comment));
             }
-        } else {            
-            $view = new View('AdminUpdateComment');
-            $view->generate(array('comment' => $comment));
-        }       
+        } else {
+            throw new Exception('Cette action n\'est pas autoriséé.');
+        }
     }
     
     public function updateComment()
     {
-        $comment = $this->commentManager->find($_REQUEST['id']);
-        if($_SESSION['auth']['role'] !== 'admin') {
-            if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
-                throw new Exception('Vous essayez de modifier un article dont vous n\'êtes pas l\'auteur !');
-            } else {
-                if(!empty($_REQUEST['id']) && !empty($_REQUEST['content'])) {               
-                    $comment->hydrate($_REQUEST);
-                    $this->commentManager->userUpdate($comment);
-                    $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
-                    $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-                    $headers .= 'Content-Transfer-Encoding: 8bit';
-                    $subject = 'Un commentaire a été modifié sur votre blog';
-                    $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
-                    mail('jean.wevdev@gmail.com', $subject, $message, $headers);
-                    header("Location: ?action=profile");
-                    exit();
+        if(!empty($_REQUEST['id']) && !empty($_REQUEST['content'])) {
+            $comment = $this->commentManager->find($_REQUEST['id']);
+            if($_SESSION['auth']['role'] !== 'admin') {
+                if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
+                    throw new Exception('Vous essayez de modifier un article dont vous n\'êtes pas l\'auteur !');
                 } else {
-                    throw new UpdateCommentException('Tous les champs sont requis !');
+                    if(!empty($_REQUEST['id']) && !empty($_REQUEST['content'])) {               
+                        $comment->hydrate($_REQUEST);
+                        $this->commentManager->userUpdate($comment);
+                        $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
+                        $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                        $headers .= 'Content-Transfer-Encoding: 8bit';
+                        $subject = 'Un commentaire a été modifié sur votre blog';
+                        $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+                        mail('jean.wevdev@gmail.com', $subject, $message, $headers);
+                        $message = 'Votre commentaire a été mis à jour, il est désormais en attente de validation';
+                        $this->userController->profile($message);
+                    } else {
+                        throw new UpdateCommentException('Tous les champs sont requis !');
+                    }
                 }
+            } else {
+                $comment->hydrate($_REQUEST);
+                $this->commentManager->update($comment);
+                header("Location: ?action=adminComments");
+                exit();
             }
         } else {
-            $comment->hydrate($_REQUEST);
-            $this->commentManager->update($comment);
-            header("Location: ?action=adminComments");
-            exit();
+            throw new Exception('Cette action n\'est pas autoriséé.');
         }
-
     }
     
     public function deleteComment()
     {
-        $comment = $this->commentManager->find($_REQUEST['id']);
-        if($_SESSION['auth']['role'] !== 'admin') {
-            if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
-                throw new Exception('Vous essayez de supprimer un article dont vous n\'êtes pas l\'auteur !');
+        if(!empty($_REQUEST['id'])) {
+            $comment = $this->commentManager->find($_REQUEST['id']);
+            if($_SESSION['auth']['role'] !== 'admin') {
+                if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
+                    throw new Exception('Vous essayez de supprimer un article dont vous n\'êtes pas l\'auteur !');
+                } else {
+                    $this->commentManager->delete($comment);
+                    header("Location: ?action=profile");
+                    exit();
+                }
             } else {
                 $this->commentManager->delete($comment);
-                header("Location: ?action=profile");
+                header("Location: ?action=adminComments");
                 exit();
             }
         } else {
-            $this->commentManager->delete($comment);
-            header("Location: ?action=adminComments");
-            exit();
+            throw new Exception('Cette action n\'est pas autoriséé.');
         }
     }
     

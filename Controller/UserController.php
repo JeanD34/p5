@@ -50,28 +50,31 @@ class UserController
     public function addUser() 
     {
         if(!empty($_REQUEST['username']) && !empty($_REQUEST['email']) && !empty($_REQUEST['password'])) {
-            // Validation
-            Validator::validateEmail($_REQUEST['email']);
-            $this->userManager->emailExist($_REQUEST['email']);
-            $this->userManager->usernameExist($_REQUEST['username']);
-            // End Validation
-            $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
-            $_REQUEST['confirmation_token'] = bin2hex(random_bytes(64));
-            $user = new User();
-            $user->hydrate($_REQUEST);
-            $this->userManager->add($user);
-            $user_id = $this->userManager->lastId();
-            $token = $_REQUEST['confirmation_token'];
-            $subject = 'Confirmation creation compte';
-            $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
-            $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
-            $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
-            $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-            $headers .= 'Content-Transfer-Encoding: 8bit';
-            mail($_REQUEST['email'], $subject, $content, $headers);
-            $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer.";
-            $view = new View("Login");
-            $view->generate(array('validMsg' => $validMsg));
+
+            if(Validator::validateEmail($_REQUEST['email'])) {
+                $this->userManager->emailExist($_REQUEST['email']);
+                $this->userManager->usernameExist($_REQUEST['username']);
+
+                $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
+                $_REQUEST['confirmation_token'] = bin2hex(random_bytes(64));
+                $user = new User();
+                $user->hydrate($_REQUEST);
+                $this->userManager->add($user);
+                $user_id = $this->userManager->lastId();
+                $token = $_REQUEST['confirmation_token'];
+                $subject = 'Confirmation creation compte';
+                $content = "Pour confirmer votre compte veuillez cliquer sur ce lien " . CONFIRM_MAIL_LINK . "index.php?action=confirmUser&id=$user_id&token=$token";
+                $headers = 'From: "Jean Descorps - Blog"<webdev@jeandescorps.fr>'."\n"; 
+                $headers .= 'Reply-To: jean.webdev@gmail.com'."\n"; 
+                $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                $headers .= 'Content-Transfer-Encoding: 8bit';
+                mail($_REQUEST['email'], $subject, $content, $headers);
+                $validMsg = "Votre compte a bien été crée, un mail vous a été envoyé pour le confirmer.";
+                $view = new View("Login");
+                $view->generate(array('validMsg' => $validMsg));
+            } else {
+                throw new LoginException('L\'adresse email n\'est pas au bon format.');
+            }
         } else {
             throw new LoginException('Vous devez remplir tous les champs pour vous inscrire !');
         }
@@ -97,12 +100,12 @@ class UserController
         }
     }
     
-    public function profile($message = null) 
+    public function profile($message = null, $error = null) 
     {   
         $user = $this->userManager->find($_SESSION['auth']['id']);
         $userComments = $this->commentManager->findLastUserComment($user->getId());
         $view = new View("AdminUser");
-        $view->generate(array('user' => $user, 'userComments' => $userComments, 'message' => $message));
+        $view->generate(array('user' => $user, 'userComments' => $userComments, 'message' => $message, 'error' => $error));
     }
 
     public function userProfile()
@@ -123,7 +126,7 @@ class UserController
         $limit = 15;
         $offsetCV = ($pageCV - 1) * $limit;
         $totalCV = $this->commentManager->commentUserNumber($user->getId());
-        $totalPagesCV = ceil($totalCV/$limit);   
+        $totalPagesCV = ceil($totalCV/$limit); 
         $userComments = $this->commentManager->findAllUserComments($user->getId(), $limit, $offsetCV);
         $view = new View("AdminUserComments");
         $view->generate(array('user' => $user, 'userComments' => $userComments, 'pageCV' => $pageCV, 'totalPagesCV' => $totalPagesCV));
@@ -151,17 +154,22 @@ class UserController
         $user = $this->userManager->find($_SESSION['auth']['id']);
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {      
             $_REQUEST['avatar'] = Validator::validateAvatar($_FILES['avatar']);
+        } else {
+            throw new AvatarException('Une erreur est survenue avec votre image');
         }
         if (empty($_REQUEST['password'])) {
             $_REQUEST['password'] = $user->getPassword();
         } else {
             $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
         }
-        Validator::validateEmail($_REQUEST['email']);
-        $user->hydrate($_REQUEST);
-        $this->userManager->update($user);
-        $message = 'Votre compte a été mis à jour !';
-        $this->profile($message);
+        if(Validator::validateEmail($_REQUEST['email'])) {
+            $user->hydrate($_REQUEST);
+            $this->userManager->update($user);
+            $message = 'Votre compte a été mis à jour !';
+            $this->profile($message);
+        } else {
+            throw new AccountException('L\'adresse email n\'est pas au bon format.');
+        }
     }
     
     public function errorConnecting($error) 
@@ -169,6 +177,10 @@ class UserController
         $_SESSION['action'] = $_REQUEST['action'];
         $view = new View("Login");
         $view->generate(array('error' => $error));        
+    }
+
+    public function errorAccount($error) {
+        $this->profile($message = null, $error);
     }
     
     public function logout() 
