@@ -40,12 +40,4 @@ abstract class AbstractManager
         $result = $this->getBdd()->lastInsertId();
         return $result;
     }
-    
-    public function rowsNumber($table)
-    {
-        $sql = 'SELECT COUNT(*) FROM' . $table;
-        $result = $this->queryExecute($sql);
-        $count = $result->fetch();
-        return $count[0];
-    }
 }

@@ -57,6 +57,14 @@ Class PostManager extends AbstractManager
         
         return $posts;
     }
+
+    public function postsNumber()
+    {
+        $sql = 'SELECT COUNT(*) FROM post';
+        $result = $this->queryExecute($sql);
+        $count = $result->fetch();
+        return $count[0];
+    }
     
     public function add($post)
     {

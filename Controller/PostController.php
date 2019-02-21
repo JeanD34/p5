@@ -28,7 +28,7 @@ class PostController {
         $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
         $limit = 6;
         $offset = ($page - 1) * $limit;
-        $totalPosts = $this->postManager->rowsNumber('post');
+        $totalPosts = $this->postManager->postsNumber();
         $totalPages = ceil($totalPosts/$limit);
         $posts = $this->postManager->findAll($limit, $offset);
         $view = new View('Posts');
@@ -48,8 +48,7 @@ class PostController {
         $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
         $limit = 8;
         $offset = ($page - 1) * $limit;
-        $table = 'post';
-        $totalPosts = $this->postManager->rowsNumber($table);
+        $totalPosts = $this->postManager->postsNumber();
         $totalPages = ceil($totalPosts/$limit);
         $posts = $this->postManager->findAll($limit, $offset);
         $view = new View('AdminPosts');

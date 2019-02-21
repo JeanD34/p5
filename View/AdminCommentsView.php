@@ -58,7 +58,7 @@
                     <?php endif; ?>
                     <?php endforeach; ?>
                     </div>
-                    <div class="text-center mb-3 mt-3 paging">
+                    <div class="text-center mb-3 mt-3 paging paging-user">
                         <?php if ($pageCINV > 1) : ?>
                             <a href="?action=adminComments&pageCINV=1"><< </a> - <a href="?action=adminComments&pageCINV=<?= $pageCINV - 1; ?>">Page précédente </a> -
                         <?php endif; ?>
@@ -125,7 +125,7 @@
                         <?php endif; ?>
                     <?php endforeach; ?>   				
             	</div>
-                <div class="text-center mb-3 mt-3 paging">
+                <div class="text-center mb-3 mt-3 paging paging-user">
                     <?php if ($pageCV > 1) : ?>
                         <a href="?action=adminComments&pageCV=1#commentVal"><< </a> - <a href="?action=adminComments&pageCV=<?= $pageCV - 1; ?>#commentVal">Page précédente </a> -
                     <?php endif; ?>
