@@ -12,13 +12,13 @@
             <div class="card card-small mb-3">
             <div class="card-body">
             <form class="add-new-post" method="post" action="index.php?action=updatePost" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="<?= $post->getId();?>">
-                <input class="form-control form-control-lg mb-3" type="text" name="title" value="<?= $post->getTitle(); ?>">
-                <input class="form-control form-control-lg mb-3" type="text" name="lead" value="<?= $post->getLead(); ?>">
+                <input type="hidden" name="id" value="<?= htmlspecialchars($post->getId()); ?>">
+                <input class="form-control form-control-lg mb-3" type="text" name="title" value="<?= htmlspecialchars($post->getTitle()); ?>">
+                <input class="form-control form-control-lg mb-3" type="text" name="lead" value="<?= htmlspecialchars($post->getLead()); ?>">
                 <input class="form-control form-control-lg mb-3" type="file" name="image">
                 <p class="mb-3">Image actuelle de l'article :</p>
-                <img class="mb-3" src="./Content/images/<?= $post->getImage() ?>"width="50%" height="50%">
-                <textarea class="form-control form-control-lg mb-3"  rows="10" name="content"><?= $post->getContent(); ?></textarea>
+                <img class="mb-3" src="./Content/images/<?= htmlspecialchars($post->getImage()); ?>"width="50%" height="50%">
+                <textarea class="form-control form-control-lg mb-3"  rows="10" name="content"><?= htmlspecialchars($post->getContent()); ?></textarea>
                 <button type="submit" class="btn btn-sm btn-accent ml-auto">
                     <i class="material-icons">file_copy</i>Modifier article
                 </button>
