@@ -71,21 +71,21 @@ class Validator {
 
     public static function validatePasswordLength($password)
     {
-        if(strlen($password >= 6)) {
+        if(strlen($password) >= 6) {
             return true;
         }
     }
 
     public static function validateCommentLength($comment)
     {
-        if(strlen(($comment)) < 1000) {
+        if(strlen($comment) < 1000) {
             return true;
         }
     }
 
     public static function validateDescriptionLength($description)
     {
-        if(strlen($description < 800)) {
+        if(strlen($description) < 800) {
             return true;
         }
     }

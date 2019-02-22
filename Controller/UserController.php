@@ -168,14 +168,15 @@ class UserController
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {      
             $_REQUEST['avatar'] = Validator::validateAvatar($_FILES['avatar']);
         } 
-        if (empty($_REQUEST['password'])) {
-            if(Validator::validatePasswordLength) {
+        if (empty($_REQUEST['password'])) {          
                 $_REQUEST['password'] = $user->getPassword();
+            
+        } else {
+            if(Validator::validatePasswordLength($_REQUEST['password'])) {
+                $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
             } else {
                 throw new AccountException('Le mot de passe doit contenir au moins 6 caractères.');
             }
-        } else {
-            $_REQUEST['password'] = password_hash($_REQUEST['password'], PASSWORD_BCRYPT);
         }
         if(Validator::validateEmail($_REQUEST['email'])) {
             if(Validator::validateDescriptionLength($_REQUEST['description'])) {
