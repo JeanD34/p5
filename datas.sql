@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 21 fév. 2019 à 21:55
+-- Généré le :  ven. 22 fév. 2019 à 18:06
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
 
@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` varchar(1000) NOT NULL,
+  `content` text NOT NULL,
   `add_date` datetime DEFAULT NULL,
   `validated` tinyint(1) NOT NULL DEFAULT '0',
   `id_post_fk` int(11) NOT NULL,
@@ -76,7 +76,7 @@ INSERT INTO `comment` (`id`, `content`, `add_date`, `validated`, `id_post_fk`, `
 (41, '\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra mauris vehicula mauris dignissim consequat. Etiam sit amet facilisis diam, a ultrices ligula. Praesent vel laoreet velit.', '2019-02-20 16:31:00', 0, 26, 37),
 (42, '\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra mauris vehicula mauris dignissim consequat. Etiam sit amet facilisis diam, a ultrices ligula. Praesent vel laoreet velit.', '2019-02-20 16:34:24', 0, 26, 37),
 (43, '\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra mauris vehicula mauris dignissim consequat. Etiam sit amet facilisis diam, a ultrices ligula. Praesent vel laoreet velit.', '2019-02-20 16:36:06', 0, 26, 37),
-(48, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta mi. Integer sit amet massa hendrerit, molestie neque eget, suscipit risus. Nunc diam libero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'', '2019-02-20 17:01:43', 0, 26, 37);
+(48, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta mi. Integer sit amet massa hendrerit, molestie neque eget, suscipit risus. Nunc diam libero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta \r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta mi. Integer sit amet massa hendrerit, molestie neque eget, suscipit risus. Nunc diam libero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta \r\nlibero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta \r\nlibero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta libero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta libero, consectetur ut nibh nec, rhoncus egestas tellus. Quisque quis lacus eu purus vestibulum efficitur eu ut velit. Nunc suscipit, mauris at egestas tristique, dui urna eleifend massa, porttitor sodales augue elit nec neque. Curabitur eget augue vitae libero tincidunt elementum vitae at eros. Nunc eget pharetra justo. Pellentesque tristique \'\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet elementum ligula, eget porta ', '2019-02-20 17:01:43', 0, 26, 37);
 
 -- --------------------------------------------------------
 
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_2` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `user`
@@ -147,7 +147,11 @@ INSERT INTO `user` (`id`, `username`, `email`, `password`, `avatar`, `website`, 
 (39, 'blabla', 'fzpefez@fezfz.fr', '$2y$10$Plv5LtN1VVrwNqNA3rM3se.qIcYdus6bO3GMl543V15otle4boT5m', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-18 18:45:45', 0, 'db3167d098841903245abbdbeb57087aa08073314988e783909d9535365143a1e7f3252889eb6b25d4fc05d52fc2ba2cf0dcc0e5acca58830a34fbfcd0e4ecf6', 'user'),
 (42, 'fredd', 'blabla@gmail.com', '$2y$10$AfgKsSeXQjW1WRlnhJpN1.EmzOTsIQHWYnuKbASYkj1Q8.2SxBI1K', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-19 20:46:10', 0, '85d5e08f1309141f90bc773eedfee2fd94870c237588538d9da70c663df1942a4d0565bddd9ed8790617c28d8cd4a982374a7da5faf0fef7a22c48f697c4d20e', 'user'),
 (43, 'gtyh', 'jazno08@hotmail.com', '$2y$10$PWrbQTPA4IJv/S/4rJ2stuBZPDxvCx5eGTCyodEl3JcId7PiVo.kC', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-19 21:10:12', 0, 'd63d5fadd8fbda6b4c26111a5ccbfd534701c2c3cd94f09b970a116eb3e4492293bcf173bb933f64f15d474b52ae333b7a3ee6279d7151a6eb376e4bef86032b', 'user'),
-(46, 'dearf', 'kiol@loki.fr', '$2y$10$8nHl7A9HAu9W3Ou4aCT87.Oy/pDm2C7fQLr2y3UU8i/Gwxk23//Wq', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-19 21:25:23', 0, '0200784d13c88401c322730a4433efce47c7b15dc03730bce5e11c6a1a6067b960441b650490e0d1cc961cd83e88f699ffcb9292985e7c800d6400b73b39614b', 'user');
+(46, 'dearf', 'kiol@loki.fr', '$2y$10$8nHl7A9HAu9W3Ou4aCT87.Oy/pDm2C7fQLr2y3UU8i/Gwxk23//Wq', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-19 21:25:23', 0, '0200784d13c88401c322730a4433efce47c7b15dc03730bce5e11c6a1a6067b960441b650490e0d1cc961cd83e88f699ffcb9292985e7c800d6400b73b39614b', 'user'),
+(47, 'dzeez', 'zdez@edzed.fr', '$2y$10$PenFFuJZe0KxvUl4sx6ZIeJH5UCSryR2vrJ6cKfSX4xwqDUUWlVfe', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-22 10:16:31', 0, '4b21e88a93a090c4683519f0ba936f1a8267d866d17f802d2e28e53b413a20f7effacb087dc672b4a1944f275980d653b29c52dc00bd3294cf261faef3074ef3', 'user'),
+(48, 'dezzed', 'fre@frer.fr', '$2y$10$dWlu59GJxsuRm8.afUszjuRVIE2TAW3qW4.4KHXODKKFcBapIJMw.', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-22 10:16:59', 0, 'f83cf2a73f7fc3a45a2f67c631bc070cbbf5045e59ef2435b5913ad5f8b4e37cfd42650fce12e20a6e07e6f95d672d7bde3e30fd8ec23bf7b3909390e50203e4', 'user'),
+(49, 'fezefz', 'efz@fez.fr', '$2y$10$sg5fiLlE6yLN5Amt4YVOqulpIVcg0zPy3xu3r5DJsMS.gW.uCz75i', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-22 10:18:23', 0, 'b2fd50ec52c39a3d12fd104328a2866e626d14b2cd1d3308a88c8e7ba40dc9ff284843ed2d274891d6d4b2ffc6d639f4ff335fd5b52a1263950120604794c88f', 'user'),
+(50, 'dez', 'dez@fgt.ki', '$2y$10$wfqkddm308aQ7wY0SfUPbO5PmGRHZ.q0cwIBnbNQrf8ClEKLVd3rq', '0.jpg', 'Votre website', 'Votre parcours en quelques ligne.', '2019-02-22 10:19:43', 0, 'b8712b7f62ab5d12cac315fb56af9e5225c2fca0a80d6b2937c976048f17ac06b6142843d3992632706a6a7108a51fda35d88fa65ebb9c4d24091fa28322c038', 'user');
 
 --
 -- Contraintes pour les tables déchargées
@@ -158,13 +162,13 @@ INSERT INTO `user` (`id`, `username`, `email`, `password`, `avatar`, `website`, 
 --
 ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_post_fk`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`id_user_fk`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`id_user_fk`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`id_user_fk`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`id_user_fk`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

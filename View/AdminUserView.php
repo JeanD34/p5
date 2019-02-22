@@ -124,7 +124,7 @@
                                 <button type="submit" class="btn btn-white confirm" data-toggle="modal" data-target="#commentModal" data-id="<?= $comment->getId(); ?>">
                                     <span class="text-danger">
                                         <i class="material-icons">clear</i>
-                                    </span> Rejeter
+                                    </span> Supprimer
                                 </button>
                                 <button type="submit" class="btn btn-white">
                                     <span class="text-light">
