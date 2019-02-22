@@ -78,7 +78,7 @@ class Validator {
 
     public static function validateCommentLength($comment)
     {
-        if(strlen($comment < 1000)) {
+        if(strlen(($comment)) < 1000) {
             return true;
         }
     }
@@ -89,4 +89,8 @@ class Validator {
             return true;
         }
     }
+
+    public static function clean($data) {
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8', false);
+      }
 }

@@ -20,24 +20,28 @@ class UserController
     }
     
     public function login()
-    {        
+    {   
         if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) {
             $user = $this->userManager->log($_REQUEST['username']);
             if(password_verify($_REQUEST['password'], $user['password'])) {
                 $_SESSION['auth'] = $user;
                 if ($user['role'] === 'user') {
                     if($_SESSION['action'] === 'userProfile') {
+                        unset($_SESSION['action']);
                         $this->userProfile();
-                    } elseif($_SESSION['actionPost'] === 'post') {
+                    } elseif(isset($_SESSION['actionPost']) && $_SESSION['actionPost'] === 'post') {
+                        unset($_SESSION['actionPost']);                    
                         header('Location: ?action=post&id=' . $_SESSION['id'] .'#comment-block');
-                        exit();
+                        exit();                        
                     } else {
                         $this->profile();
                     }                
                 } elseif ($user['role'] === 'admin') {
                     if($_SESSION['action'] === 'userProfile') {
+                        unset($_SESSION['action']);
                         $this->userProfile(); 
-                    } elseif($_SESSION['actionPost'] === 'post') {
+                    } elseif(isset($_SESSION['actionPost']) && $_SESSION['actionPost'] === 'post') {
+                        unset($_SESSION['actionPost']);
                         header('Location: ?action=post&id=' . $_SESSION['id'] .'#comment-block');
                         exit();
                     } else {

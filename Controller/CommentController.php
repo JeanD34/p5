@@ -75,26 +75,34 @@ class CommentController {
                 if($comment->getId_user_fk() != $_SESSION['auth']['id']) {
                     throw new Exception('Vous essayez de modifier un article dont vous n\'êtes pas l\'auteur !');
                 } else {
-                    if(!empty($_REQUEST['id']) && !empty($_REQUEST['content'])) {               
-                        $comment->hydrate($_REQUEST);
-                        $this->commentManager->userUpdate($comment);
-                        $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
-                        $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-                        $headers .= 'Content-Transfer-Encoding: 8bit';
-                        $subject = 'Un commentaire a été modifié sur votre blog';
-                        $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
-                        mail('jean.descorps@laposte.net', $subject, $message, $headers);
-                        $message = 'Votre commentaire a été mis à jour, il est désormais en attente de validation';
-                        $this->userController->profile($message);
+                    if(!empty($_REQUEST['id']) && !empty($_REQUEST['content'])) {
+                        if(Validator::validateCommentLength($_REQUEST['content'])) {               
+                            $comment->hydrate($_REQUEST);
+                            $this->commentManager->userUpdate($comment);
+                            $headers = 'From: "Blog - Modification Commentaire"<webdev@jeandescorps.fr>'."\n";  
+                            $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
+                            $headers .= 'Content-Transfer-Encoding: 8bit';
+                            $subject = 'Un commentaire a été modifié sur votre blog';
+                            $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
+                            mail('jean.descorps@laposte.net', $subject, $message, $headers);
+                            $message = 'Votre commentaire a été mis à jour, il est désormais en attente de validation';
+                            $this->userController->profile($message);
+                        } else {
+                            throw new UpdateCommentException('Les commentaires sont limités à 1000 caractères');
+                        }
                     } else {
                         throw new UpdateCommentException('Tous les champs sont requis !');
                     }
                 }
             } else {
-                $comment->hydrate($_REQUEST);
-                $this->commentManager->update($comment);
-                header("Location: ?action=adminComments");
-                exit();
+                if(Validator::validateCommentLength($_REQUEST['content'])) {
+                    $comment->hydrate($_REQUEST);
+                    $this->commentManager->update($comment);
+                    header("Location: ?action=adminComments");
+                    exit();
+                } else {
+                    throw new UpdateCommentException('Les commentaires sont limités à 1000 caractères');
+                }
             }
         } else {
             throw new Exception('Cette action n\'est pas autoriséé.');
