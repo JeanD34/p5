@@ -122,8 +122,8 @@ INSERT INTO `post` (`id`, `title`, `image`, `lead`, `content`, `add_date`, `id_u
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(300) NOT NULL,
-  `email` varchar(300) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(300) NOT NULL,
   `avatar` varchar(255) NOT NULL DEFAULT '0.jpg',
   `website` varchar(255) NOT NULL DEFAULT 'Votre website',

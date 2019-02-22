@@ -27,7 +27,7 @@ class HomeController
                 $headers .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
                 $headers .= 'Content-Transfer-Encoding: 8bit';
 
-                if(!mail('jean.wevdev@gmail.com', $_REQUEST['subject'], $_REQUEST['message'], $headers)) {
+                if(!mail('jean.descorps@laposte.net', $_REQUEST['subject'], $_REQUEST['message'], $headers)) {
                     throw new MailException('Une erreur est survenue. Pour nous contactez directement : jean.webdev@gmail.com');
                 } else {
                     $_SESSION['validMail'] = 'Votre email a été envoyé avec succès. Nous vous re-contacterons dès que possible';

@@ -14,10 +14,10 @@ class View
     {
         $content = $this->fileGenerate($this->file, $datas);
         if(stristr($this->file, 'Admin') === FALSE) {
-        $view = $this->fileGenerate('view/Layout.php',
+        $view = $this->fileGenerate('View/Layout.php',
             array('title' => $this->title, 'content' => $content));
         } else {
-            $view = $this->fileGenerate('view/AdminLayout.php',
+            $view = $this->fileGenerate('View/AdminLayout.php',
                 array('title' => $this->title, 'content' => $content));
         }
         echo $view;        

@@ -83,7 +83,7 @@ class CommentController {
                         $headers .= 'Content-Transfer-Encoding: 8bit';
                         $subject = 'Un commentaire a été modifié sur votre blog';
                         $message = $_SESSION['auth']['username'] . ' à modifié un commentaire à votre blog, vous pouvez allez le valider ici : '. CONFIRM_MAIL_LINK .'index.php?action=adminComments';
-                        mail('jean.wevdev@gmail.com', $subject, $message, $headers);
+                        mail('jean.descorps@laposte.net', $subject, $message, $headers);
                         $message = 'Votre commentaire a été mis à jour, il est désormais en attente de validation';
                         $this->userController->profile($message);
                     } else {

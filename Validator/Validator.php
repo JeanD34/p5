@@ -71,7 +71,7 @@ class Validator {
 
     public static function validatePasswordLength($password)
     {
-        if(strlen($password < 6)) {
+        if(strlen($password >= 6)) {
             return true;
         }
     }
