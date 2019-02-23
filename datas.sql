@@ -161,8 +161,8 @@ INSERT INTO `user` (`id`, `username`, `email`, `password`, `avatar`, `website`, 
 -- Contraintes pour la table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_post_fk`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`id_user_fk`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_post_fk`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`id_user_fk`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `post`
